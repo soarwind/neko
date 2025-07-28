@@ -128,6 +128,9 @@
 "Flush fake-ip cache" = "Flush fake-ip cache";
 
 /* No comment provided by engineer. */
+"Flush dns cache" = "Flush dns cache";
+
+/* No comment provided by engineer. */
 "fails: %@" = "fails: %@";
 
 /* No comment provided by engineer. */

@@ -196,8 +196,8 @@
 /* Class = "NSMenu"; title = "Log level"; ObjectID = "wqo-3T-4qO"; */
 "wqo-3T-4qO.title" = "日志等级";
 
-/* Class = "NSMenuItem"; title = "Flush fake-ip cache"; ObjectID = "WZT-AH-ria"; */
-"WZT-AH-ria.title" = "清空 Fake-IP 缓存";
+/* Class = "NSMenuItem"; title = "Flush dns cache"; ObjectID = "WZT-AH-ria"; */
+"WZT-AH-ria.title" = "清空 dns 缓存";
 
 /* Class = "NSMenuItem"; title = "Update GEO databases"; ObjectID = "WZu-fm-nxd"; */
 "WZu-fm-nxd.title" = "更新 Geo 数据库";
