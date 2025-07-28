@@ -128,6 +128,9 @@
 "Flush fake-ip cache" = "清空 fake-ip 缓存";
 
 /* No comment provided by engineer. */
+"Flush dns cache" = "清空 dns 缓存";
+
+/* No comment provided by engineer. */
 "fails: %@" = "失败: %@";
 
 /* No comment provided by engineer. */

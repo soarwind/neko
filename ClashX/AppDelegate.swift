@@ -861,8 +861,26 @@ extension AppDelegate {
     }
 
     @IBAction func flushFakeipCache(_ sender: NSMenuItem) {
+        let group = DispatchGroup()
+        
+        var flushFakeipCacheResult = false
+        var flushDNSCacheResult = false
+        
+        group.enter()
         ApiRequest.flushFakeipCache {
-			UserNotificationCenter.shared.post(title: NSLocalizedString("Flush fake-ip cache", comment: ""), info: $0 ? "Success" : "Failed")
+            flushFakeipCacheResult = $0
+            group.leave()
+        }
+        
+        group.enter()
+        ApiRequest.flushDNSCache {
+            flushDNSCacheResult = $0
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            let info = (flushFakeipCacheResult && flushDNSCacheResult) ? "Success" : "Failed"
+            UserNotificationCenter.shared.post(title: NSLocalizedString("Flush dns cache", comment: ""), info: info)
         }
     }
 

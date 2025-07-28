@@ -498,6 +498,16 @@ extension ApiRequest {
             Logger.log("FlushFakeipCache \(re ? "success" : "failed")")
         }
     }
+    
+    static func flushDNSCache(completeHandler: ((Bool) -> Void)? = nil) {
+        Logger.log("FlushDNSCache")
+        req("/cache/dns/flush",
+            method: .post).response {
+            let re = $0.response?.statusCode == 204
+            completeHandler?(re)
+            Logger.log("FlushDNSCache \(re ? "success" : "failed")")
+        }
+    }
 
     // MARK: - Providers
 

@@ -243,8 +243,9 @@ struct ConfigView: View {
 			ConfigItemView(name: "FakeIP") {
 				Button {
 					ApiRequest.flushFakeipCache()
+                    ApiRequest.flushDNSCache()
 				} label: {
-					Text("Flush fake-iP data")
+					Text("Flush dns cache")
 				}
 			}
 		}
