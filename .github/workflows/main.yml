@@ -20,11 +20,11 @@ jobs:
         fetch-depth: 0
 
     - name: download meta core
-      uses: robinraju/release-downloader@v1.10
+      uses: robinraju/release-downloader@v1.12
       with:
         repository: 'MetaCubeX/mihomo'
         tag: "v1.19.12"
-        fileName: ".*darwin.*64-v.*.gz"
+        fileName: "mihomo-darwin-???64-v?.*.*.gz"
 
         # releaseId: "62870807"
         # fileName: ".*darwin.*64-alpha.*.gz"
