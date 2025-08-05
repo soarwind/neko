@@ -1,6 +1,24 @@
 #!/bin/bash
 set -e
 
+if [ ! -d "clash.meta" ]; then
+    echo "Downloading mihomo..."
+    mkdir clash.meta
+    # arm64
+    curl -s https://api.github.com/repos/MetaCubeX/mihomo/releases/latest \
+     | grep "browser_download_url.*mihomo-darwin-arm64-v.*gz" \
+     | cut -d '"' -f 4 \
+     | xargs curl -L -o clash.meta/mihomo-darwin-arm64.gz
+
+     # amd64
+    curl -s https://api.github.com/repos/MetaCubeX/mihomo/releases/latest \
+     | grep "browser_download_url.*mihomo-darwin-amd64-v.*gz" \
+     | cut -d '"' -f 4 \
+     | xargs curl -L -o clash.meta/mihomo-darwin-amd64.gz
+
+    echo "Download complete."
+fi
+
 echo "Unzip core files"
 cd clash.meta
 ls
