@@ -16,6 +16,7 @@ protocol ProxyConfigRemoteProcessProtocol {
 	func updateTun(state: Bool, dns: String)
 	func getUsedPorts(reply: @escaping (String?) -> Void)
 	
+    func flushDnsCache()
 	
 	func enableProxy(port: Int, socksPort: Int, pac: String?, filterInterface: Bool, ignoreList: [String], reply: @escaping (String?) -> Void)
 	func disableProxy(filterInterface: Bool, reply: @escaping (String?) -> Void)

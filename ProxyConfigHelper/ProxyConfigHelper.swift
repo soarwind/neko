@@ -143,4 +143,11 @@ extension ProxyConfigHelper: ProxyConfigRemoteProcessProtocol {
 			self.metaDNS.flushDnsCache()
 		}
 	}
+    
+    func flushDnsCache() {
+        DispatchQueue.main.async {
+            self.metaDNS.flushDnsCache()
+        }
+    }
+    
 }

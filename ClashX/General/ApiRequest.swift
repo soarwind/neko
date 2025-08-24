@@ -488,8 +488,32 @@ extension ApiRequest {
             completeHandler?()
         }
     }
+    
+    static func flushDNSCache() {
+        let group = DispatchGroup()
+        
+        var flushFakeipCacheResult = false
+        var flushDNSCacheResult = false
+        
+        group.enter()
+        ApiRequest.flushFakeipCache {
+            flushFakeipCacheResult = $0
+            group.leave()
+        }
+        
+        group.enter()
+        ApiRequest.flushDNSCache {
+            flushDNSCacheResult = $0
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            let info = (flushFakeipCacheResult && flushDNSCacheResult) ? "Success" : "Failed"
+            UserNotificationCenter.shared.post(title: NSLocalizedString("Flush dns cache", comment: ""), info: info)
+        }
+    }
 
-    static func flushFakeipCache(completeHandler: ((Bool) -> Void)? = nil) {
+    private static func flushFakeipCache(completeHandler: ((Bool) -> Void)? = nil) {
         Logger.log("FlushFakeipCache")
         req("/cache/fakeip/flush",
             method: .post).response {
@@ -499,7 +523,7 @@ extension ApiRequest {
         }
     }
     
-    static func flushDNSCache(completeHandler: ((Bool) -> Void)? = nil) {
+    private static func flushDNSCache(completeHandler: ((Bool) -> Void)? = nil) {
         Logger.log("FlushDNSCache")
         req("/cache/dns/flush",
             method: .post).response {

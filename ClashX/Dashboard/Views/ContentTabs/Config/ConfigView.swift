@@ -242,8 +242,7 @@ struct ConfigView: View {
 			
 			ConfigItemView(name: "FakeIP") {
 				Button {
-					ApiRequest.flushFakeipCache()
-                    ApiRequest.flushDNSCache()
+                    AppDelegate.shared.flushDNSCache(NSMenuItem())
 				} label: {
 					Text("Flush dns cache")
 				}
