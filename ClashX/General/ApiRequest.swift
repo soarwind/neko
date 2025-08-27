@@ -94,6 +94,17 @@ class ApiRequest {
 	private var trafficWebSocketRetryTimer: Timer?
 	private var loggingWebSocketRetryTimer: Timer?
 	private var memoryWebSocketRetryTimer: Timer?
+    
+    private var logRateLimiter = LogRateLimiter {
+        let alert = NSAlert()
+        alert.messageText = NSLocalizedString("Log system crashed.", comment: "")
+        alert.addButton(withTitle: NSLocalizedString("Quit", comment: ""))
+        alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
+        let response = alert.runModal()
+        if response == .alertFirstButtonReturn {
+            NSApplication.shared.terminate(nil)
+        }
+    }
 
 	private var alamoFireManager: Session
 
@@ -488,8 +499,32 @@ extension ApiRequest {
             completeHandler?()
         }
     }
+    
+    static func flushDNSCache() {
+        let group = DispatchGroup()
+        
+        var flushFakeipCacheResult = false
+        var flushDNSCacheResult = false
+        
+        group.enter()
+        ApiRequest.flushFakeipCache {
+            flushFakeipCacheResult = $0
+            group.leave()
+        }
+        
+        group.enter()
+        ApiRequest.flushDNSCache {
+            flushDNSCacheResult = $0
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            let info = (flushFakeipCacheResult && flushDNSCacheResult) ? "Success" : "Failed"
+            UserNotificationCenter.shared.post(title: NSLocalizedString("Flush dns cache", comment: ""), info: info)
+        }
+    }
 
-    static func flushFakeipCache(completeHandler: ((Bool) -> Void)? = nil) {
+    private static func flushFakeipCache(completeHandler: ((Bool) -> Void)? = nil) {
         Logger.log("FlushFakeipCache")
         req("/cache/fakeip/flush",
             method: .post).response {
@@ -499,7 +534,7 @@ extension ApiRequest {
         }
     }
     
-    static func flushDNSCache(completeHandler: ((Bool) -> Void)? = nil) {
+    private static func flushDNSCache(completeHandler: ((Bool) -> Void)? = nil) {
         Logger.log("FlushDNSCache")
         req("/cache/dns/flush",
             method: .post).response {
@@ -745,6 +780,7 @@ extension ApiRequest: WebSocketDelegate {
 			delegate?.didUpdateTraffic(up: json["up"].intValue, down: json["down"].intValue)
 			dashboardDelegate?.didUpdateTraffic(up: json["up"].intValue, down: json["down"].intValue)
 		case loggingWebSocket:
+            guard logRateLimiter.processLog() else { return }
 			delegate?.didGetLog(log: json["payload"].stringValue, level: json["type"].string ?? "info")
 			dashboardDelegate?.didGetLog(log: json["payload"].stringValue, level: json["type"].string ?? "info")
 		case memoryWebSocket:

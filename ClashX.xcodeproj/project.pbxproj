@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0106179F2AF38EFA005C7877 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FEC6682AD9369C00BAD9F5 /* Command.swift */; };
+		0114F0CF2E5B60CB007C7AAC /* LogRateLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0114F0CE2E5B60CB007C7AAC /* LogRateLimiter.swift */; };
 		0162E74F2864B819007218A6 /* MetaTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0162E74E2864B819007218A6 /* MetaTask.swift */; };
 		0197255A2CA15D6400C14E49 /* UserNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019725592CA15D6400C14E49 /* UserNotificationCenter.swift */; };
 		0197255C2CA15FC600C14E49 /* NSWorkspace+openFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0197255B2CA15FC600C14E49 /* NSWorkspace+openFile.swift */; };
@@ -214,6 +215,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0114F0CE2E5B60CB007C7AAC /* LogRateLimiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogRateLimiter.swift; sourceTree = "<group>"; };
 		015F1E90288E42A50052B20A /* ClashMetaConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClashMetaConfig.swift; sourceTree = "<group>"; };
 		0162E74D2864B818007218A6 /* com.metacubex.ClashX.ProxyConfigHelper-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "com.metacubex.ClashX.ProxyConfigHelper-Bridging-Header.h"; sourceTree = "<group>"; };
 		0162E74E2864B819007218A6 /* MetaTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaTask.swift; sourceTree = "<group>"; };
@@ -597,6 +599,7 @@
 				49B445152457CDF000B27E3E /* ClashStatusTool.swift */,
 				49D223382A1DA5F10002FFCB /* SSIDSuspendTool.swift */,
 				49FEC6682AD9369C00BAD9F5 /* Command.swift */,
+				0114F0CE2E5B60CB007C7AAC /* LogRateLimiter.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1101,6 +1104,7 @@
 				01BCDB042C9ECD010028FA94 /* ClashApiDatasStorage.swift in Sources */,
 				01BCDB052C9ECD010028FA94 /* RulesView.swift in Sources */,
 				01BCDB062C9ECD010028FA94 /* RuleProviderView.swift in Sources */,
+				0114F0CF2E5B60CB007C7AAC /* LogRateLimiter.swift in Sources */,
 				01BCDB072C9ECD010028FA94 /* SidebarItem.swift in Sources */,
 				01BCDB092C9ECD010028FA94 /* DBProxyStorage.swift in Sources */,
 				01BCDB0A2C9ECD010028FA94 /* SwiftUIViewExtensions.swift in Sources */,
