@@ -780,9 +780,11 @@ extension ApiRequest: WebSocketDelegate {
 			delegate?.didUpdateTraffic(up: json["up"].intValue, down: json["down"].intValue)
 			dashboardDelegate?.didUpdateTraffic(up: json["up"].intValue, down: json["down"].intValue)
 		case loggingWebSocket:
-            guard logRateLimiter.processLog() else { return }
-			delegate?.didGetLog(log: json["payload"].stringValue, level: json["type"].string ?? "info")
-			dashboardDelegate?.didGetLog(log: json["payload"].stringValue, level: json["type"].string ?? "info")
+            Task {
+                guard await logRateLimiter.processLog() else { return }
+                delegate?.didGetLog(log: json["payload"].stringValue, level: json["type"].string ?? "info")
+                dashboardDelegate?.didGetLog(log: json["payload"].stringValue, level: json["type"].string ?? "info")
+            }
 		case memoryWebSocket:
 			delegate?.didUpdateMemory(memory: json["inuse"].int64Value)
 			dashboardDelegate?.didUpdateMemory(memory: json["inuse"].int64Value)

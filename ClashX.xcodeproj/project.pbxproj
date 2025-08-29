@@ -599,7 +599,6 @@
 				49B445152457CDF000B27E3E /* ClashStatusTool.swift */,
 				49D223382A1DA5F10002FFCB /* SSIDSuspendTool.swift */,
 				49FEC6682AD9369C00BAD9F5 /* Command.swift */,
-				0114F0CE2E5B60CB007C7AAC /* LogRateLimiter.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -749,6 +748,7 @@
 			children = (
 				495A44D220D267D000888A0A /* LaunchAtLogin.swift */,
 				496BDEDF21196F1E00C5207F /* Logger.swift */,
+				0114F0CE2E5B60CB007C7AAC /* LogRateLimiter.swift */,
 				4905A2C92A20841B00AEDA2E /* NSView+Layout.swift */,
 				49B10869216A356D0064FFCE /* String+Extension.swift */,
 				49ABB748236B0F9E00535CD7 /* UnsafePointer+bridge.swift */,

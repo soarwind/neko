@@ -21,6 +21,7 @@ class Logger {
         dataFormatter.setLocalizedDateFormatFromTemplate("YYYY/MM/dd HH:mm:ss:SSS")
         fileLogger.logFormatter = DDLogFileFormatterDefault(dateFormatter: dataFormatter)
         fileLogger.rollingFrequency = TimeInterval(60 * 60 * 24) // 24 hours
+        fileLogger.maximumFileSize = 5 * 1024 * 1024 // 5MB
         fileLogger.logFileManager.maximumNumberOfLogFiles = 3
         DDLog.add(fileLogger)
         dynamicLogLevel = ConfigManager.selectLoggingApiLevel.toDDLogLevel()
