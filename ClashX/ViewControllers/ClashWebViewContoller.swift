@@ -13,13 +13,14 @@ import WebKit
 
 enum WebCacheCleaner {
     static func clean() {
-        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-        Logger.log("[WebCacheCleaner] All cookies deleted")
-        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            records.forEach { record in
-                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-                Logger.log("[WebCacheCleaner] Record \(record) deleted")
-            }
+        Task { @MainActor in
+            HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+            Logger.log("[WebCacheCleaner] All cookies deleted")
+            
+            let types = WKWebsiteDataStore.allWebsiteDataTypes()
+            let records = await WKWebsiteDataStore.default().dataRecords(ofTypes: types)
+            await WKWebsiteDataStore.default().removeData(ofTypes: types, for: records)
+            Logger.log("[WebCacheCleaner] All records deleted")
         }
     }
 }

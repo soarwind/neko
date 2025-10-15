@@ -103,6 +103,7 @@ class DashboardViewContoller: NSViewController {
 			
 			var items = [NSToolbarItem.Identifier]()
 			items.append(.toggleSidebar)
+            items.append(.sidebarTrackingSeparator)
 			
 			switch item {
 			case .overview, .config:

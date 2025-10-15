@@ -17,7 +17,7 @@ struct SidebarView: View {
 	
     var body: some View {
 		Group {
-			SidebarListView(selectionName: $sidebarSelectionName)
+			SidebarListView(selection: $sidebarSelectionName)
 		}
 		.environmentObject(clashApiDatasStorage.overviewData)
 		.environmentObject(clashApiDatasStorage.logStorage)
