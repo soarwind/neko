@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SidebarListView: View {
 	
-	@Binding var selectionName: SidebarItem?
+	@Binding var selection: SidebarItem?
 	
 	@State private var reloadID = UUID().uuidString
 	
@@ -18,52 +18,52 @@ struct SidebarListView: View {
 		List {
 			NavigationLink(destination: OverviewView(),
 						   tag: SidebarItem.overview,
-						   selection: $selectionName) {
-				SidebarLabel(item: .overview, iconName: "chart.bar.xaxis")
+						   selection: $selection) {
+				SidebarLabel(item: .overview)
 			}
 			
 			NavigationLink(destination: ProxiesView(),
 						   tag: SidebarItem.proxies,
-						   selection: $selectionName) {
-				SidebarLabel(item: .proxies, iconName: "globe.asia.australia")
+						   selection: $selection) {
+				SidebarLabel(item: .proxies)
 			}
 			
 			NavigationLink(destination: ProvidersView(),
 						   tag: SidebarItem.providers,
-						   selection: $selectionName) {
-				SidebarLabel(item: .providers, iconName: "link.icloud")
+						   selection: $selection) {
+				SidebarLabel(item: .providers)
 			}
 			
 			NavigationLink(destination: RulesView(),
 						   tag: SidebarItem.rules,
-						   selection: $selectionName) {
-				SidebarLabel(item: .rules, iconName: "waveform.and.magnifyingglass")
+						   selection: $selection) {
+				SidebarLabel(item: .rules)
 			}
 			
 			NavigationLink(destination: ConnectionsView(),
 						   tag: SidebarItem.conns,
-						   selection: $selectionName) {
-				SidebarLabel(item: .conns, iconName: "app.connected.to.app.below.fill")
+						   selection: $selection) {
+				SidebarLabel(item: .conns)
 			}
 			
 			NavigationLink(destination: ConfigView(),
 						   tag: SidebarItem.config,
-						   selection: $selectionName) {
-				SidebarLabel(item: .config, iconName: "slider.horizontal.3")
+						   selection: $selection) {
+				SidebarLabel(item: .config)
 			}
 			
 			NavigationLink(destination: LogsView(),
 						   tag: SidebarItem.logs,
-						   selection: $selectionName) {
-				SidebarLabel(item: .logs, iconName: "wand.and.stars.inverse")
+						   selection: $selection) {
+				SidebarLabel(item: .logs)
 			}
 			
 		}
 		.introspect(.table, on: .macOS(.v12...)) {
 			$0.refusesFirstResponder = true
 			
-			if selectionName == nil {
-				selectionName = SidebarItem.overview
+			if selection == nil {
+				selection = SidebarItem.overview
 				$0.allowsEmptySelection = false
 				if $0.selectedRow == -1 {
 					$0.selectRowIndexes(.init(integer: 0), byExtendingSelection: false)
