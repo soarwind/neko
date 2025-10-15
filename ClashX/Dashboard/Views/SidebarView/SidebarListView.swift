@@ -5,7 +5,7 @@
 //
 
 import SwiftUI
-import SwiftUIIntrospect
+@_spi(Advanced) import SwiftUIIntrospect
 
 struct SidebarListView: View {
 	
@@ -59,7 +59,7 @@ struct SidebarListView: View {
 			}
 			
 		}
-		.introspect(.table, on: .macOS(.v12, .v13, .v14, .v15)) {
+		.introspect(.table, on: .macOS(.v12...)) {
 			$0.refusesFirstResponder = true
 			
 			if selectionName == nil {
