@@ -49,7 +49,7 @@ class ICloudManager {
                 return
             }
             let list = fileURLs
-                .filter { String($0.split(separator: ".").last ?? "") == "yaml" }
+                .filter { String($0.split(separator: ".").last ?? "") == "json" }
                 .map { $0.split(separator: ".").dropLast().joined(separator: ".") }
             configs(list)
         }
@@ -63,9 +63,9 @@ class ICloudManager {
             }
             let files = try? FileManager.default.contentsOfDirectory(atPath: url.path)
             if files?.isEmpty == true {
-                let path = Bundle.main.path(forResource: "sampleConfig", ofType: "yaml")!
+                let path = Bundle.main.path(forResource: "sampleConfig", ofType: "json")!
                 try? FileManager.default.copyItem(atPath: path, toPath: kDefaultConfigFilePath)
-                try? FileManager.default.copyItem(atPath: Bundle.main.path(forResource: "sampleConfig", ofType: "yaml")!, toPath: url.appendingPathComponent("config.yaml").path)
+                try? FileManager.default.copyItem(atPath: path, toPath: url.appendingPathComponent("config.json").path)
             }
         }
     }

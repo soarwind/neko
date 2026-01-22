@@ -11,12 +11,11 @@ import Cocoa
 import RxCocoa
 import RxSwift
 import SwiftyJSON
-import Yams
 import PromiseKit
 
 let statusItemLengthWithSpeed: CGFloat = 72
 
-private let MetaCoreMd5 = "WOSHIZIDONGSHENGCHENGDEA"
+private let SingBoxCoreMd5 = "WOSHIZIDONGSHENGCHENGDEA"
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -65,7 +64,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	var updateGeoTimer: Timer?
 	
-	let clashProcess = ClashProcess(MetaCoreMd5)
+	let clashProcess = ClashProcess(SingBoxCoreMd5)
 
     func applicationWillFinishLaunching(_ notification: Notification) {
         Logger.log("applicationWillFinishLaunching")
@@ -839,7 +838,7 @@ extension AppDelegate {
 			ApiRequest.getRules { rules in
 				guard self?.updateGeoTimer != nil else { return }
 				if let rule = rules.first,
-				   rule.payload == ClashMetaConfig.initRulePayload {
+				   rule.payload == SingBoxConfig.initRulePayload {
 					Logger.log("Update GEO Finished.")
 					self?.updateConfig(showNotification: false) { _ in
 						UserNotificationCenter.shared.post(title: "Update GEO Databases Finished.", info: "")

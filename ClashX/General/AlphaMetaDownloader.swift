@@ -1,6 +1,6 @@
 //
-//  AlphaMetaDownloader.swift
-//  ClashX Meta
+//  AlphaSingBoxDownloader.swift
+//  ClashX
 //
 //  Copyright © 2023 west2online. All rights reserved.
 //
@@ -9,7 +9,7 @@ import Cocoa
 import Alamofire
 import CryptoKit
 
-class AlphaMetaDownloader: NSObject {
+class AlphaSingBoxDownloader: NSObject {
 
 	enum errors: Error {
 		case decodeReleaseInfoFailed
@@ -19,11 +19,12 @@ class AlphaMetaDownloader: NSObject {
 		case testFailed
         case checksumFailed
         case downloadChecksumFailed
+		case extractFailed
 
 		func des() -> String {
 			switch self {
 			case .decodeReleaseInfoFailed:
-				return "Decode alpha release info failed"
+				return "Decode release info failed"
 			case .notFoundUpdate:
 				return "Not found update"
 			case .downloadFailed:
@@ -36,6 +37,8 @@ class AlphaMetaDownloader: NSObject {
                 return "Download checksum failed"
 			case .unknownError:
 				return "Unknown error"
+			case .extractFailed:
+				return "Extract sing-box failed"
 			}
 		}
 	}
@@ -83,35 +86,29 @@ class AlphaMetaDownloader: NSObject {
 	}
 
 	static func alphaAssets() async throws -> [ReleasesResp.Asset] {
-		let resp = try? await AF.request("https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha").serializingDecodable(ReleasesResp.self).value
-		
+		let resp = try? await AF.request("https://api.github.com/repos/SagerNet/sing-box/releases/latest").serializingDecodable(ReleasesResp.self).value
+
 		guard let resp else {
 			throw errors.downloadFailed
 		}
-		
+
 		return resp.assets
 	}
-    
+
     static func alphaCoreAsset(_ assets: [ReleasesResp.Asset]) async throws -> ReleasesResp.Asset {
         guard let assetName = assetName(),
               let asset = assets.first(where: {
-                  guard $0.state == "uploaded", $0.contentType == "application/gzip" else { return false }
-                  
-                  let names = $0.name.split(separator: "-").map(String.init)
-                  guard names.count > 4,
-                        names[0] == "mihomo",
-                        names[1] == "darwin",
-                        names[2] == assetName,
-                        names[3] == "alpha" else { return false }
-                        
-                  return true
+                  guard $0.state == "uploaded",
+                        $0.contentType == "application/gzip" || $0.contentType == "application/x-gzip" else { return false }
+                  let target = "-darwin-\\(assetName)"
+                  return $0.name.hasPrefix("sing-box-") && $0.name.contains(target) && $0.name.hasSuffix(".tar.gz")
               }) else {
             throw errors.decodeReleaseInfoFailed
         }
-        
+
         return asset
     }
-    
+
     static func checksumString(_ assets: [ReleasesResp.Asset], asset: ReleasesResp.Asset) async throws -> String {
         guard let checksumsAsset = assets.first(where: {
             $0.name == "checksums.txt"
@@ -122,10 +119,10 @@ class AlphaMetaDownloader: NSObject {
         else {
             throw errors.downloadChecksumFailed
         }
-        
+
         return String(str)
     }
-    
+
 	static func checkVersion(_ asset: ReleasesResp.Asset) throws -> ReleasesResp.Asset {
 		guard let path = Paths.alphaCorePath()?.path else {
 			throw errors.unknownError
@@ -138,7 +135,6 @@ class AlphaMetaDownloader: NSObject {
 	}
 
 	static func downloadCore(_ asset: ReleasesResp.Asset) async throws -> Data {
-		let fm = FileManager.default
 		let data = try? await AF.download(asset.downloadUrl).serializingData().value
 
 		if let data {
@@ -150,7 +146,7 @@ class AlphaMetaDownloader: NSObject {
 
     static func replaceCore(_ gzData: Data, checksum: String) throws -> String {
 		let fm = FileManager.default
-        
+
         guard SHA256.hash(data: gzData).compactMap({ String(format: "%02x", $0) }).joined() == checksum else {
             throw errors.checksumFailed
         }
@@ -161,9 +157,31 @@ class AlphaMetaDownloader: NSObject {
 
 		try fm.createDirectory(at: helperURL.deletingLastPathComponent(), withIntermediateDirectories: true, attributes: nil)
 
+		let tempRoot = URL(fileURLWithPath: Paths.tempPath()).appendingPathComponent(UUID().uuidString)
+		let archivePath = tempRoot.appendingPathComponent("sing-box.tar.gz")
+		try fm.createDirectory(at: tempRoot, withIntermediateDirectories: true)
+		try gzData.write(to: archivePath)
+
+		let proc = Process()
+		proc.executableURL = .init(fileURLWithPath: "/usr/bin/tar")
+		proc.arguments = ["-xzf", archivePath.path, "-C", tempRoot.path]
+		try proc.run()
+		proc.waitUntilExit()
+
+		guard proc.terminationStatus == 0 else {
+			throw errors.extractFailed
+		}
+
+		guard let enumerator = fm.enumerator(at: tempRoot, includingPropertiesForKeys: nil),
+		      let binaryPath = enumerator
+			.compactMap({ $0 as? URL })
+			.first(where: { $0.lastPathComponent == "sing-box" }) else {
+			throw errors.extractFailed
+		}
+
 		let cachePath = Paths.tempPath().appending("/\(UUID().uuidString).newcore")
-		try gzData.gunzipped().write(to: .init(fileURLWithPath: cachePath))
-		
+		try fm.copyItem(at: binaryPath, to: .init(fileURLWithPath: cachePath))
+
 		Logger.log("save alpha core in \(cachePath)")
 
 		guard let version = AppDelegate.shared.clashProcess.verifyCoreFile(cachePath)?.version else {

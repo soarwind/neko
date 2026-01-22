@@ -1,39 +1,51 @@
 #!/bin/bash
 set -e
 
-if [ ! -d "clash.meta" ]; then
-    echo "Downloading mihomo..."
-    mkdir clash.meta
+if [ ! -d "sing-box" ]; then
+    echo "Downloading sing-box..."
+    mkdir sing-box
     # arm64
-    curl -s https://api.github.com/repos/MetaCubeX/mihomo/releases/latest \
-     | grep "browser_download_url.*mihomo-darwin-arm64-v.*gz" \
+    curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest \
+     | grep "browser_download_url.*sing-box-.*-darwin-arm64.*tar.gz" \
      | cut -d '"' -f 4 \
-     | xargs curl -L -o clash.meta/mihomo-darwin-arm64.gz
+     | xargs curl -L -o sing-box/sing-box-darwin-arm64.tar.gz
 
      # amd64
-    curl -s https://api.github.com/repos/MetaCubeX/mihomo/releases/latest \
-     | grep "browser_download_url.*mihomo-darwin-amd64-v.*gz" \
+    curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest \
+     | grep "browser_download_url.*sing-box-.*-darwin-amd64.*tar.gz" \
      | cut -d '"' -f 4 \
-     | xargs curl -L -o clash.meta/mihomo-darwin-amd64.gz
+     | xargs curl -L -o sing-box/sing-box-darwin-amd64.tar.gz
 
     echo "Download complete."
 fi
 
 echo "Unzip core files"
-cd clash.meta
+cd sing-box
 ls
-gzip -d *.gz
-echo "Create Universal core"
-lipo -create -output com.metacubex.ClashX.ProxyConfigHelper.meta mihomo-darwin-amd64* mihomo-darwin-arm64*
-chmod +x com.metacubex.ClashX.ProxyConfigHelper.meta
+mkdir -p arm64 amd64
 
-echo "Update meta core md5 to code"
-sed -i '' "s/WOSHIZIDONGSHENGCHENGDEA/$(md5 -q com.metacubex.ClashX.ProxyConfigHelper.meta)/g" ../ClashX/AppDelegate.swift
+if [ -f "sing-box-darwin-arm64.tar.gz" ]; then
+    tar -xzf sing-box-darwin-arm64.tar.gz -C arm64
+fi
+
+if [ -f "sing-box-darwin-amd64.tar.gz" ]; then
+    tar -xzf sing-box-darwin-amd64.tar.gz -C amd64
+fi
+
+echo "Create Universal core"
+arm64_bin=$(find arm64 -name "sing-box" -type f | head -1)
+amd64_bin=$(find amd64 -name "sing-box" -type f | head -1)
+
+lipo -create -output sing-box "$amd64_bin" "$arm64_bin"
+chmod +x sing-box
+
+echo "Update sing-box core md5 to code"
+sed -i '' "s/WOSHIZIDONGSHENGCHENGDEA/$(md5 -q sing-box)/g" ../ClashX/AppDelegate.swift
 sed -n '20p' ../ClashX/AppDelegate.swift
 
 echo "Gzip Universal core"
-gzip com.metacubex.ClashX.ProxyConfigHelper.meta
-cp com.metacubex.ClashX.ProxyConfigHelper.meta.gz ../ClashX/Resources/
+gzip -f sing-box
+cp sing-box.gz ../ClashX/Resources/
 cd ..
 
 echo "delete old files"

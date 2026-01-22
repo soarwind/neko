@@ -98,8 +98,8 @@ class UserNotificationCenter: NSObject {
 	}
 	
 	func postMetaErrorNotice(msg: String) {
-		let message = "Meta Core: \(msg)"
-		postNotificationAlert(title: NSLocalizedString("Start Meta Fail!", comment: ""), info: message)
+		let message = "Sing-box Core: \(msg)"
+		postNotificationAlert(title: NSLocalizedString("Start Sing-box Fail!", comment: ""), info: message)
 	}
 	
 	func postConfigErrorNotice(msg: String) {
@@ -131,7 +131,7 @@ class UserNotificationCenter: NSObject {
 	}
 	
 	func postUpdateNotice(msg: String) {
-		postNotificationAlert(title: "Update ClashX Meta", info: msg)
+		postNotificationAlert(title: "Update ClashX Sing-box", info: msg)
 	}
 }
 

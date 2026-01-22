@@ -1079,7 +1079,7 @@
                                         <subviews>
                                             <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8pQ-pI-ToK">
                                                 <rect key="frame" x="-2" y="24" width="142" height="16"/>
-                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="GitHub for Clash Meta:" allowsEditingTextAttributes="YES" id="lsq-AW-K0M">
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="GitHub for sing-box:" allowsEditingTextAttributes="YES" id="lsq-AW-K0M">
                                                     <font key="font" metaFont="system"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -1114,7 +1114,7 @@
                                         <subviews>
                                             <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="q4m-SB-uHV" customClass="HyperlinkTextField" customModule="ClashX_Meta" customModuleProvider="target">
                                                 <rect key="frame" x="-2" y="24" width="242" height="16"/>
-                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="https://github.com/MetaCubeX/mihomo" id="Bej-j7-KKV">
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="https://github.com/SagerNet/sing-box" id="Bej-j7-KKV">
                                                     <font key="font" metaFont="system"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -1123,7 +1123,7 @@
                                                     <fragment content="#bc-ignore!"/>
                                                 </attributedString>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="href" value="https://github.com/MetaCubeX/Clash.Meta"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="href" value="https://github.com/SagerNet/sing-box"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bSi-kz-Dkf" customClass="HyperlinkTextField" customModule="ClashX_Meta" customModuleProvider="target">

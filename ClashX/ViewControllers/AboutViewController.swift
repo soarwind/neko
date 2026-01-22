@@ -37,7 +37,7 @@ class AboutViewController: NSViewController {
         let build = AppVersionUtil.currentBuild
 
         versionLabel.stringValue = "Version: \(version) (\(build))"
-        coreVersionLabel.stringValue = "Meta Core: \(clashCoreVersion)"
+        coreVersionLabel.stringValue = "Sing-box Core: \(clashCoreVersion)"
         buildTimeLabel.stringValue = "\(commit)-\(branch) \(buildTime)"
     }
 

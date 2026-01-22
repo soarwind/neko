@@ -72,7 +72,7 @@ class MetaPrefsViewController: NSViewController {
 	@IBAction func useAlphaMeta(_ sender: NSButton) {
 		if UserDefaults.standard.object(forKey: "useAlphaCore") as? Bool == nil {
 			let alert = NSAlert()
-			alert.messageText = NSLocalizedString("Alpha Meta core Warning", comment: "")
+			alert.messageText = NSLocalizedString("Alpha Sing-box core Warning", comment: "")
 			alert.alertStyle = .warning
 			alert.addButton(withTitle: NSLocalizedString("Continue", comment: ""))
 			alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
@@ -91,7 +91,7 @@ class MetaPrefsViewController: NSViewController {
 		updateProgressIndicator.isHidden = false
 		updateProgressIndicator.startAnimation(nil)
 		
-		let dl = AlphaMetaDownloader.self
+		let dl = AlphaSingBoxDownloader.self
 		
 		Task {
 			do {
@@ -105,11 +105,11 @@ class MetaPrefsViewController: NSViewController {
 				await MainActor.run {
 					self.updateAlphaVersion(newVer)
 					let msg = NSLocalizedString("Version: ", comment: "") + newVer
-					UserNotificationCenter.shared.post(title: "Clash Meta Core", info: msg)
+					UserNotificationCenter.shared.post(title: "Sing-box Core", info: msg)
 				}
 			} catch {
-				let error = error as? AlphaMetaDownloader.errors
-				UserNotificationCenter.shared.post(title: "Clash Meta Core", info: error?.des() ?? "")
+				let error = error as? AlphaSingBoxDownloader.errors
+				UserNotificationCenter.shared.post(title: "Sing-box Core", info: error?.des() ?? "")
 			}
 			
 			await MainActor.run {
@@ -196,10 +196,10 @@ class MetaPrefsViewController: NSViewController {
 		showAlphaButton.isEnabled = enable
 		if let v = version {
 			alphaVersionTextField.stringValue = v
-			updateButton.title = NSLocalizedString("Update Alpha Meta core", comment: "")
+			updateButton.title = NSLocalizedString("Update Alpha Sing-box core", comment: "")
 		} else {
 			alphaVersionTextField.stringValue = "none"
-			updateButton.title = NSLocalizedString("Download Meta core", comment: "")
+			updateButton.title = NSLocalizedString("Download Sing-box core", comment: "")
 		}
 		
 		if let v = version,

@@ -206,7 +206,7 @@ class RemoteConfigManager {
 
     static func createCacheConfig(string: String) -> String? {
 		let path = Paths.tempPath() + "/cacheConfigs"
-        let confPath = path + "/\(UUID().uuidString).yaml"
+        let confPath = path + "/\(UUID().uuidString).json"
 
         let fm = FileManager.default
         try? fm.createDirectory(atPath: path, withIntermediateDirectories: true)
