@@ -171,7 +171,7 @@
 		01F336392AD10D0B0048AF77 /* geoip.dat.gz in Resources */ = {isa = PBXBuildFile; fileRef = 01B009AC2854533200B93618 /* geoip.dat.gz */; };
 		01F3363A2AD10D0B0048AF77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49CF3B2620CD7465001EBF94 /* Main.storyboard */; };
 		01F3363B2AD10D0B0048AF77 /* RemoteConfigAddView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 499A485922ED781100F6C675 /* RemoteConfigAddView.xib */; };
-		01F3363C2AD10D0B0048AF77 /* sampleConfig.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 4989F98D20D0AE990001E564 /* sampleConfig.yaml */; };
+		01F3363C2AD10D0B0048AF77 /* sampleConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 4989F98D20D0AE990001E564 /* sampleConfig.json */; };
 		01F3363D2AD10D0B0048AF77 /* com.metacubex.ClashX.ProxyConfigHelper.meta.gz in Resources */ = {isa = PBXBuildFile; fileRef = 01C1462928962E4E00346AF3 /* com.metacubex.ClashX.ProxyConfigHelper.meta.gz */; };
 		01F3363E2AD10D0B0048AF77 /* country.mmdb.gz in Resources */ = {isa = PBXBuildFile; fileRef = 01B2274A29B845F100FE35C9 /* country.mmdb.gz */; };
 		01F336402AD10D0B0048AF77 /* com.metacubex.ClashX.ProxyConfigHelper in Copy Files */ = {isa = PBXBuildFile; fileRef = F9A7C0692306E874007163C7 /* com.metacubex.ClashX.ProxyConfigHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -320,7 +320,7 @@
 		49870ADA2AA75DC7002B106B /* TerminalCleanUpAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalCleanUpAction.swift; sourceTree = "<group>"; };
 		49870ADC2AA76602002B106B /* UpdateConfigAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateConfigAction.swift; sourceTree = "<group>"; };
 		498960722340F21C00AFB7EC /* com.metacubex.ClashX.ProxyConfigHelper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = com.metacubex.ClashX.ProxyConfigHelper.entitlements; sourceTree = "<group>"; };
-		4989F98D20D0AE990001E564 /* sampleConfig.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = sampleConfig.yaml; sourceTree = "<group>"; };
+		4989F98D20D0AE990001E564 /* sampleConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sampleConfig.json; sourceTree = "<group>"; };
 		498BC2522929CC2A00CA8084 /* SettingTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTabViewController.swift; sourceTree = "<group>"; };
 		498BC2542929CCAE00CA8084 /* GeneralSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingViewController.swift; sourceTree = "<group>"; };
 		4991D22F2A564DDC00978143 /* SpeedUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedUtils.swift; sourceTree = "<group>"; };
@@ -711,7 +711,7 @@
 				01B009AD2854533300B93618 /* geosite.dat.gz */,
 				01C1462928962E4E00346AF3 /* com.metacubex.ClashX.ProxyConfigHelper.meta.gz */,
 				49761DA621C9497000AE13EF /* dashboard */,
-				4989F98D20D0AE990001E564 /* sampleConfig.yaml */,
+				4989F98D20D0AE990001E564 /* sampleConfig.json */,
 				01E33AB429B5C5E300FD1006 /* menu_icon@2x.png */,
 			);
 			path = Resources;
@@ -996,7 +996,7 @@
 				01F336392AD10D0B0048AF77 /* geoip.dat.gz in Resources */,
 				01F3363A2AD10D0B0048AF77 /* Main.storyboard in Resources */,
 				01F3363B2AD10D0B0048AF77 /* RemoteConfigAddView.xib in Resources */,
-				01F3363C2AD10D0B0048AF77 /* sampleConfig.yaml in Resources */,
+				01F3363C2AD10D0B0048AF77 /* sampleConfig.json in Resources */,
 				01F3363D2AD10D0B0048AF77 /* com.metacubex.ClashX.ProxyConfigHelper.meta.gz in Resources */,
 				01F3363E2AD10D0B0048AF77 /* country.mmdb.gz in Resources */,
 			);

@@ -294,7 +294,7 @@
                                     </box>
                                     <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TTD-4f-gyL">
                                         <rect key="frame" x="18" y="0.0" width="396" height="16"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Requires restart ClashX Meta to take effect." id="wIw-Pj-t2i">
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Requires restart ClashX to take effect." id="wIw-Pj-t2i">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="systemOrangeColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

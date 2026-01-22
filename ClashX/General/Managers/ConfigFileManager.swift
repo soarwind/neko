@@ -46,7 +46,7 @@ class ConfigFileManager {
     static func backupAndRemoveConfigFile() -> Bool {
         let path = kDefaultConfigFilePath
         if FileManager.default.fileExists(atPath: path) {
-            let newPath = "\(kConfigFolderPath)config_\(Date().timeIntervalSince1970).yaml"
+            let newPath = "\(kConfigFolderPath)config_\(Date().timeIntervalSince1970).json"
             try? FileManager.default.moveItem(atPath: path, toPath: newPath)
         }
         return true
@@ -54,7 +54,7 @@ class ConfigFileManager {
 
     static func copySampleConfigIfNeed() {
         if !FileManager.default.fileExists(atPath: kDefaultConfigFilePath) {
-            let path = Bundle.main.path(forResource: "sampleConfig", ofType: "yaml")!
+            let path = Bundle.main.path(forResource: "sampleConfig", ofType: "json")!
             try? FileManager.default.copyItem(atPath: path, toPath: kDefaultConfigFilePath)
         }
     }

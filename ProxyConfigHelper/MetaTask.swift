@@ -35,17 +35,15 @@ class MetaTask: NSObject {
 		proc.executableURL = .init(fileURLWithPath: path)
         proc.currentDirectoryURL = .init(fileURLWithPath: confPath)
         
+        let resolvedConfigPath = confFilePath.isEmpty
+            ? URL(fileURLWithPath: confPath).appendingPathComponent("config.json").path
+            : confFilePath
+
         var args = [
-            "-d",
-            confPath
+            "run",
+            "-c",
+            resolvedConfigPath
         ]
-        
-        if confFilePath != "" {
-            args.append(contentsOf: [
-                "-f",
-                confFilePath
-            ])
-        }
         
         killOldProc()
         
@@ -104,7 +102,7 @@ class MetaTask: NSObject {
 					 }
 					 */
 					
-					if $0.contains("RESTful API listening at:") {
+					if $0.contains("RESTful API listening at:") || $0.contains("Clash API listening at:") {
 						if self.testExternalController(serverResult) {
 							serverResult.log = logs.joined(separator: "\n")
 							returnResult(serverResult.jsonString())
@@ -160,7 +158,7 @@ class MetaTask: NSObject {
 				let data = pipe.fileHandleForReading.readDataToEndOfFile()
 				guard let string = String(data: data, encoding: String.Encoding.utf8) else {
 					
-					returnResult("Meta process terminated, no found output.")
+					returnResult("sing-box process terminated, no found output.")
 					return
 				}
 				
@@ -191,7 +189,7 @@ class MetaTask: NSObject {
 			try self.proc.run()
 			self.timer?.resume()
 		} catch let error {
-			returnResult("Start meta error, \(error.localizedDescription).")
+			returnResult("Start sing-box error, \(error.localizedDescription).")
 		}
 	
     }
@@ -212,7 +210,7 @@ class MetaTask: NSObject {
     func killOldProc() {
         let proc = Process()
         proc.executableURL = .init(fileURLWithPath: "/usr/bin/killall")
-        proc.arguments = ["com.metacubex.ClashX.ProxyConfigHelper.meta"]
+        proc.arguments = ["sing-box"]
         try? proc.run()
         proc.waitUntilExit()
     }
@@ -284,7 +282,7 @@ class MetaTask: NSObject {
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         
         guard let str = try? JSONDecoder().decode(MetaCurl.self, from: data),
-			  (str.hello == "clash.meta" || str.hello == "mihomo") else {
+              (str.hello == "sing-box" || str.hello == "clash") else {
             return false
         }
         return true
@@ -314,26 +312,21 @@ class MetaTask: NSObject {
     }
     
     func parseConfFile(_ confPath: String, confFilePath: String) -> MetaServer? {
-        let fileURL = confFilePath == "" ? URL(fileURLWithPath: confPath).appendingPathComponent("config.yaml", isDirectory: false) : URL(fileURLWithPath: confFilePath)
-        
+        let fileURL = confFilePath.isEmpty
+            ? URL(fileURLWithPath: confPath).appendingPathComponent("config.json", isDirectory: false)
+            : URL(fileURLWithPath: confFilePath)
+
         guard let data = FileManager.default.contents(atPath: fileURL.path),
-              let content = String(data: data, encoding: .utf8) else {
+              let json = try? JSONSerialization.jsonObject(with: data, options: []),
+              let root = json as? [String: Any] else {
             return nil
         }
-        let lines = content.split(separator: "\n").map(String.init)
-        
-        func find(_ key: String) -> String {
-            var re = lines.first(where: { $0.starts(with: "\(key): ") })?.dropFirst("\(key): ".count) ?? ""
-            
-            if re.hasPrefix("\"") && re.hasSuffix("\"")
-                || re.hasPrefix("'") && re.hasSuffix("'") {
-                re.removeLast()
-                re.removeFirst()
-            }
-            return String(re)
-        }
-        
-        return MetaServer(externalController: find("external-controller"),
-                          secret: find("secret"))
+
+        let experimental = root["experimental"] as? [String: Any]
+        let clashApi = experimental?["clash_api"] as? [String: Any]
+        let externalController = clashApi?["external_controller"] as? String ?? ""
+        let secret = clashApi?["secret"] as? String ?? ""
+
+        return MetaServer(externalController: externalController, secret: secret)
     }
 }

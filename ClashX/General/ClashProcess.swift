@@ -83,9 +83,9 @@ class ClashProcess: NSObject {
 		if validateDefaultCore(md5) {
 			return (corePath.path, nil)
 		} else {
-			Logger.log("Failure to verify the internal Meta Core.")
+			Logger.log("Failure to verify the internal sing-box core.")
 			Logger.log(corePath.path)
-			return (nil, "Failure to verify the internal Meta Core.\nDo NOT replace core file in the resources folder.")
+			return (nil, "Failure to verify the internal sing-box core.\nDo NOT replace core file in the resources folder.")
 		}
 	}()
 	
@@ -96,7 +96,7 @@ class ClashProcess: NSObject {
 		let paths = launchPath
 		
 		guard let _ = paths.path else {
-			let msg = paths.err ?? "Load internal Meta Core failed."
+			let msg = paths.err ?? "Load internal sing-box core failed."
 			delegate?.clashLaunchPathNotFound(msg)
 			return
 		}
@@ -107,7 +107,7 @@ class ClashProcess: NSObject {
 			self.retryTimes = 0
 			Logger.log("Init config file success.")
 			
-			self.showUpdateNotification("ClashX_Meta_1.3.0_UpdateTips", info: "Config Floder migrated from\n~/.config/clash to\n~/.config/clash.meta")
+			self.showUpdateNotification("ClashX_SingBox_1.0.0_UpdateTips", info: "Config Floder migrated from\n~/.config/clash.meta to\n~/.config/sing-box")
 		}.catch { error in
 			Logger.log("\(error)", level: .error)
 
@@ -162,7 +162,7 @@ class ClashProcess: NSObject {
 		}
 		_coreState = .starting
 		
-		Logger.log("Trying start meta core")
+		Logger.log("Trying start sing-box core")
 		
 		return prepareConfigFile().then {
 			self.generateInitConfig()
@@ -171,7 +171,7 @@ class ClashProcess: NSObject {
 		}.get { res in
 			if res.log != "" {
 				Logger.log("""
-\n########  Clash Meta Start Log  #########
+\n########  Sing-box Start Log  #########
 \(res.log)
 ########  END  #########
 """, level: .info)
@@ -224,10 +224,10 @@ class ClashProcess: NSObject {
 		}
 	}
 
-	func generateInitConfig() -> Promise<ClashMetaConfig.Config> {
+	func generateInitConfig() -> Promise<SingBoxConfig.Config> {
         safePaths().then { paths in
             Promise { resolver in
-                ClashMetaConfig.generateInitConfig {
+                SingBoxConfig.generateInitConfig {
                     var config = $0
                     config.safePaths = paths.joined(separator: ":")
                     PrivilegedHelperManager.shared.helper {
@@ -267,7 +267,7 @@ class ClashProcess: NSObject {
         }
     }
 
-	func startMeta(_ config: ClashMetaConfig.Config) -> Promise<MetaServer> {
+	func startMeta(_ config: SingBoxConfig.Config) -> Promise<MetaServer> {
 		.init { resolver in
 			guard let path = launchPath.path else {
 				resolver.reject(StartMetaError.launchPathMissing)
@@ -276,8 +276,8 @@ class ClashProcess: NSObject {
         
             
             let confJSON = MetaServer(
-                externalController: config.externalController,
-                secret: config.secret ?? "",
+                externalController: config.experimental?.clashApi?.externalController ?? "127.0.0.1:9090",
+                secret: config.experimental?.clashApi?.secret ?? "",
                 safePaths: config.safePaths ?? ""
             ).jsonString()
 			
@@ -343,7 +343,7 @@ class ClashProcess: NSObject {
 			try data.write(to: corePath)
 			return nil
 		} catch let error {
-			let msg = "Unzip Meta failed: \(error)"
+			let msg = "Unzip sing-box failed: \(error)"
 			Logger.log(msg, level: .error)
 			return msg
 		}
@@ -354,7 +354,7 @@ class ClashProcess: NSObject {
 
 		let proc = Process()
 		proc.executableURL = .init(fileURLWithPath: path)
-		proc.arguments = ["-v"]
+		proc.arguments = ["version"]
 		let pipe = Pipe()
 		proc.standardOutput = pipe
 		do {
@@ -374,30 +374,23 @@ class ClashProcess: NSObject {
 		Logger.log("verify core path: \(path)")
 		Logger.log("-v out: \(out)")
 		
-		let outs = out
+		let line = out
 			.split(separator: "\n")
-			.first {
-				$0.starts(with: "Clash Meta") || $0.starts(with: "Mihomo Meta")
-			}?.split(separator: " ")
-			.map(String.init)
+			.first { $0.lowercased().contains("sing-box") }
 
-		guard let outs,
-			  outs.count == 13,
-			  (outs[0] == "Clash" || outs[0] == "Mihomo"),
-			  outs[1] == "Meta",
-			  outs[3] == "darwin" else {
+		guard let line else { return nil }
+
+		let tokens = line.split(separator: " ").map(String.init)
+		let version: String
+		if let index = tokens.firstIndex(where: { $0 == "version" }), tokens.count > index + 1 {
+			version = tokens[index + 1]
+		} else if tokens.count > 1 {
+			version = tokens[1]
+		} else {
 			return nil
 		}
 
-		let version = outs[2]
-
-		let dateString = [outs[7], outs[8], outs[9], outs[10], outs[12]].joined(separator: "-")
-		let f = DateFormatter()
-		f.dateFormat = "E-MMM-d-HH:mm:ss-yyyy"
-		f.timeZone = .init(abbreviation: outs[11])
-		let date = f.date(from: dateString)
-
-		return (version: version, date: date)
+		return (version: version, date: nil)
 	}
 
 	private func validateDefaultCore(_ md5: String) -> Bool {
@@ -446,17 +439,15 @@ class ClashProcess: NSObject {
 			
 			let proc = Process()
 			proc.executableURL = .init(fileURLWithPath: path)
-			var args = [
-				"-t",
-				"-d",
-				confPath
+			let resolvedConfigPath = confFilePath.isEmpty
+				? URL(fileURLWithPath: confPath).appendingPathComponent("config.json").path
+				: confFilePath
+
+			let args = [
+				"check",
+				"-c",
+				resolvedConfigPath
 			]
-			if confFilePath != "" {
-				args.append(contentsOf: [
-					"-f",
-					confFilePath
-				])
-			}
 			let pipe = Pipe()
 			proc.standardOutput = pipe
 			
@@ -474,24 +465,14 @@ class ClashProcess: NSObject {
 			}
 			
 			let task = MetaTask()
-			
+
 			let results = string.split(separator: "\n").map(String.init).map(task.formatMsg(_:))
-			
+
 			guard let re = results.last else {
 				return "Test failed, no found output."
 			}
-			
-			if re.hasPrefix("configuration file"),
-			   re.hasSuffix("test is successful") {
-				return nil
-			} else if re.hasPrefix("configuration file"),
-					  re.hasSuffix("test failed") {
-				return results.count > 1
-				? results[results.count - 2]
-				: "Test failed, unknown result."
-			} else {
-				return re
-			}
+
+			return proc.terminationStatus == 0 ? nil : re
 		} catch let error {
 			return "\(error)"
 		}

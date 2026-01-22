@@ -11,7 +11,7 @@
 "Add a remote control config" = "添加远程控制器配置";
 
 /* No comment provided by engineer. */
-"Alpha Meta core Warning" = "如果你不知道你在做什么, 请绝对不要打开这个开关.\n在 'su' 权限下运行未经验证的 Meta 核心, 可能损坏你的 mac.";
+"Alpha Sing-box core Warning" = "如果你不知道你在做什么, 请绝对不要打开这个开关.\n在 'su' 权限下运行未经验证的 sing-box 核心, 可能损坏你的 mac.";
 
 /* No comment provided by engineer. */
 "All Clients" = "所有客户端";
@@ -38,7 +38,7 @@
 "Cancel" = "取消";
 
 /* No comment provided by engineer. */
-"ClashX fail to create ~/.config/clash.meta folder. Please check privileges or manually create folder and restart ClashX." = "ClashX 创建 ~/.config/clash.meta 文件夹失败，请检查权限设置或者手动创建文件夹后重启 ClashX";
+"ClashX fail to create ~/.config/sing-box folder. Please check privileges or manually create folder and restart ClashX." = "ClashX 创建 ~/.config/sing-box 文件夹失败，请检查权限设置或者手动创建文件夹后重启 ClashX";
 
 /* No comment provided by engineer. */
 "ClashX needs to install/update a helper tool with administrator privileges, otherwise ClashX won't be able to configure system proxy." = "ClashX 需要使用管理员权限安装/更新一个帮助程序，否则 ClashX 将无法设置系统代理。";
@@ -104,7 +104,7 @@
 "Download fail" = "下载失败";
 
 /* No comment provided by engineer. */
-"Download Meta core" = "下载 Meta 内核";
+"Download Sing-box core" = "下载 sing-box 内核";
 
 /* No comment provided by engineer. */
 "Enhance proxy list render" = "增强渲染代理列表";
@@ -281,7 +281,7 @@
 "Stable" = "Stable";
 
 /* No comment provided by engineer. */
-"Start Meta Fail!" = "打开Meta 失败!";
+"Start Sing-box Fail!" = "打开 Sing-box 失败!";
 
 /* No comment provided by engineer. */
 "Status" = "状态";
@@ -323,7 +323,7 @@
 "Update All Providers" = "更新所有 Providers";
 
 /* No comment provided by engineer. */
-"Update Alpha Meta core" = "更新 Alpha Meta 内核";
+"Update Alpha Sing-box core" = "更新 Alpha sing-box 内核";
 
 /* No comment provided by engineer. */
 "Update GEOIP Database" = "更新 GEOIP 数据库";

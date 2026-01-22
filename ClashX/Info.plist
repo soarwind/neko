@@ -15,10 +15,10 @@
 		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
-				<string>yaml</string>
+				<string>json</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>YAML</string>
+			<string>JSON</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>LSHandlerRank</key>

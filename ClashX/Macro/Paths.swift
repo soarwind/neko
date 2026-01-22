@@ -7,13 +7,13 @@
 //
 import Foundation
 
-let kConfigFolderPath = "\(NSHomeDirectory())/.config/clash.meta/"
+let kConfigFolderPath = "\(NSHomeDirectory())/.config/sing-box/"
 
-let kDefaultConfigFilePath = "\(kConfigFolderPath)config.yaml"
+let kDefaultConfigFilePath = "\(kConfigFolderPath)config.json"
 
-let kDefauleMetaCoreName = "com.metacubex.ClashX.ProxyConfigHelper.meta"
+let kDefauleMetaCoreName = "sing-box"
 
-let kSafeConfigName = ".clashx_meta_config"
+let kSafeConfigName = ".sing-box_config"
 
 enum Paths {
     static func localConfigPath(for name: String) -> String {
@@ -21,7 +21,7 @@ enum Paths {
     }
 
     static func configFileName(for name: String) -> String {
-        return "\(name).yaml"
+        return "\(name).json"
     }
 
     static func defaultCorePath() -> URL? {
@@ -47,14 +47,14 @@ enum Paths {
 	static func applicationSupportDirectory() -> URL? {
 		FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
 			.first?
-			.appendingPathComponent("com.metacubex.ClashX.meta")
+			.appendingPathComponent("com.sagernet.sing-box")
 	}
 
 	static func tempPath() -> String {
 		guard let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)
 			.first?
-			.appendingPathComponent("com.MetaCubeX.ClashX.meta") else {
-			return NSTemporaryDirectory().appending("com.MetaCubeX.ClashX.meta")
+			.appendingPathComponent("com.SagerNet.sing-box") else {
+			return NSTemporaryDirectory().appending("com.SagerNet.sing-box")
 		}
 		
 		try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)

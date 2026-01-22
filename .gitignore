@@ -22,7 +22,7 @@ ClashX/Resources/geoip.dat.gz
 ClashX/Resources/geosite.dat.gz
 .bundle/config
 ClashX/Resources/com.metacubex.ClashX.ProxyConfigHelper.*
-clash.meta
+sing-box
 *.app/**
 ClashX.app.dSYM.zip
 build_derived_data

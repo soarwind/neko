@@ -19,24 +19,24 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: download meta core
+    - name: download sing-box core
       uses: robinraju/release-downloader@v1.12
       with:
-        repository: 'MetaCubeX/mihomo'
-        tag: "v1.19.19"
-        fileName: "mihomo-darwin-???64-v?.*.*.gz"
+        repository: 'SagerNet/sing-box'
+        tag: "v1.11.0"
+        fileName: "sing-box-*-darwin-???64-*.tar.gz"
 
         # releaseId: "62870807"
         # fileName: ".*darwin.*64-alpha.*.gz"
         
-        out-file-path: "clash.meta"
+        out-file-path: "sing-box"
         token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: build infos
       run: |
         /usr/libexec/PlistBuddy -c "Set CFBundleVersion $(git rev-list --count origin/master..origin/meta)" ClashX/Info.plist
         /usr/libexec/PlistBuddy -c "Set CFBundleShortVersionString $(git describe --tags --abbrev=0)" ClashX/Info.plist
-        /usr/libexec/PlistBuddy -c "Add coreVersion string $(ls clash.meta | grep -m1 "" | sed -ne 's/.*64-\(.*\).gz/\1/p')" ClashX/Info.plist
+        /usr/libexec/PlistBuddy -c "Add coreVersion string $(ls sing-box | grep -m1 \"sing-box-\" | sed -ne 's/sing-box-\\(.*\\)-darwin-.*/\\1/p')" ClashX/Info.plist
         /usr/libexec/PlistBuddy -c "Add gitBranch string $GITHUB_REF_NAME" ClashX/Info.plist
         /usr/libexec/PlistBuddy -c "Add gitCommit string ${GITHUB_SHA::7}" ClashX/Info.plist
         /usr/libexec/PlistBuddy -c "Add buildTime string $(date +%Y-%m-%d\ %H:%M)" ClashX/Info.plist
@@ -113,4 +113,3 @@ jobs:
         generate_release_notes: true
         files: |
           ClashX Meta.zip
-

@@ -32,7 +32,7 @@
 "Cancel" = "取消";
 
 /* No comment provided by engineer. */
-"ClashX fail to create ~/.config/clash folder. Please check privileges or manually create folder and restart ClashX." = "ClashX 創建 ~/.config/clash 文件夾失敗，請檢查權限設定或者手動創建文件夾後重啟 ClashX";
+"ClashX fail to create ~/.config/sing-box folder. Please check privileges or manually create folder and restart ClashX." = "ClashX 創建 ~/.config/sing-box 文件夾失敗，請檢查權限設定或者手動創建文件夾後重啟 ClashX";
 
 /* No comment provided by engineer. */
 "ClashX needs to install/update a helper tool with administrator privileges, otherwise ClashX won't be able to configure system proxy." = "ClashX 需要使用管理員權限安裝/更新一個幫助程序，否則 ClashX 將無法設定系統代理。";

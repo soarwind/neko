@@ -11,7 +11,7 @@
 "Add a remote control config" = "Add a remote control config";
 
 /* No comment provided by engineer. */
-"Alpha Meta core Warning" = "If you don't know what you're doing, never turn this switch on.\nRunning Meta Core without any authentication under 'su' privileges may damage your mac.";
+"Alpha Sing-box core Warning" = "If you don't know what you're doing, never turn this switch on.\nRunning sing-box Core without any authentication under 'su' privileges may damage your mac.";
 
 /* No comment provided by engineer. */
 "All Clients" = "All Clients";
@@ -38,7 +38,7 @@
 "Cancel" = "Cancel";
 
 /* No comment provided by engineer. */
-"ClashX fail to create ~/.config/clash.meta folder. Please check privileges or manually create folder and restart ClashX." = "ClashX fail to create ~/.config/clash.meta folder. Please check privileges or manually create folder and restart ClashX.";
+"ClashX fail to create ~/.config/sing-box folder. Please check privileges or manually create folder and restart ClashX." = "ClashX fail to create ~/.config/sing-box folder. Please check privileges or manually create folder and restart ClashX.";
 
 /* No comment provided by engineer. */
 "ClashX needs to install/update a helper tool with administrator privileges, otherwise ClashX won't be able to configure system proxy." = "ClashX needs to install/update a helper tool with administrator privileges, otherwise ClashX won't be able to configure system proxy.";
@@ -104,7 +104,7 @@
 "Download fail" = "Download fail";
 
 /* No comment provided by engineer. */
-"Download Meta core" = "Download Meta core";
+"Download Sing-box core" = "Download Sing-box core";
 
 /* No comment provided by engineer. */
 "Enhance proxy list render" = "Enhance proxy list render";
@@ -276,7 +276,7 @@
 "Stable" = "Stable";
 
 /* No comment provided by engineer. */
-"Start Meta Fail!" = "Start Meta Fail!";
+"Start Sing-box Fail!" = "Start Sing-box Fail!";
 
 /* No comment provided by engineer. */
 "Status" = "Status";
@@ -318,7 +318,7 @@
 "Update All Providers" = "Update All Providers";
 
 /* No comment provided by engineer. */
-"Update Alpha Meta core" = "Update Alpha Meta core";
+"Update Alpha Sing-box core" = "Update Alpha Sing-box core";
 
 /* No comment provided by engineer. */
 "total: %d, success: %d" = "total: %d, success: %d";
