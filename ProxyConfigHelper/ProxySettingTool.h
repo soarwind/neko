@@ -1,6 +1,6 @@
 //
 //  ProxySettingTool.h
-//  com.west2online.ClashX.ProxyConfigHelper
+//  com.west2online.Neko.ProxyConfigHelper
 //
 //  Created by yichengchen on 2019/8/17.
 //  Copyright © 2019 west2online. All rights reserved.

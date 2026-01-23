@@ -1,6 +1,6 @@
 //
 //  MetaTask.swift
-//  com.metacubex.ClashX.ProxyConfigHelper
+//  com.metacubex.Neko.ProxyConfigHelper
 
 
 import Cocoa

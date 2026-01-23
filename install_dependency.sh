@@ -84,32 +84,32 @@ chmod +x sing-box
 echo "Detect core version"
 core_version=$(./sing-box version 2>/dev/null | head -1 | sed -E 's/.*version[[:space:]]+([0-9A-Za-z.+-]+)/\1/')
 if [ -n "$core_version" ]; then
-    if /usr/libexec/PlistBuddy -c "Set coreVersion $core_version" ../ClashX/Info.plist 2>/dev/null; then
+    if /usr/libexec/PlistBuddy -c "Set coreVersion $core_version" ../Neko/Info.plist 2>/dev/null; then
         :
     else
-        /usr/libexec/PlistBuddy -c "Add coreVersion string $core_version" ../ClashX/Info.plist
+        /usr/libexec/PlistBuddy -c "Add coreVersion string $core_version" ../Neko/Info.plist
     fi
-    /usr/libexec/PlistBuddy -c 'Print coreVersion' ../ClashX/Info.plist
+    /usr/libexec/PlistBuddy -c 'Print coreVersion' ../Neko/Info.plist
 else
     echo "Failed to detect sing-box core version." >&2
     exit 1
 fi
 
 echo "Update sing-box core md5 to code"
-sed -i '' "s/WOSHIZIDONGSHENGCHENGDEA/$(md5 -q sing-box)/g" ../ClashX/AppDelegate.swift
-sed -n '20p' ../ClashX/AppDelegate.swift
+sed -i '' "s/WOSHIZIDONGSHENGCHENGDEA/$(md5 -q sing-box)/g" ../Neko/AppDelegate.swift
+sed -n '20p' ../Neko/AppDelegate.swift
 
 echo "Gzip Universal core"
 gzip -f sing-box
-cp sing-box.gz ../ClashX/Resources/
+cp sing-box.gz ../Neko/Resources/
 cd ..
 
 echo "Ensure ProxyConfigHelper meta exists"
-meta_path="./ClashX/Resources/com.metacubex.ClashX.ProxyConfigHelper.meta.gz"
+meta_path="./Neko/Resources/com.metacubex.Neko.ProxyConfigHelper.meta.gz"
 if [ ! -f "$meta_path" ]; then
     echo "Building ProxyConfigHelper for meta..."
-    xcodebuild -project ClashX.xcodeproj -scheme "com.metacubex.ClashX.ProxyConfigHelper" -configuration Release -derivedDataPath build/ProxyConfigHelper build
-    helper_bin=$(find build/ProxyConfigHelper/Build/Products/Release -name "com.metacubex.ClashX.ProxyConfigHelper" -type f | head -1)
+    xcodebuild -project Neko.xcodeproj -scheme "com.metacubex.Neko.ProxyConfigHelper" -configuration Release -derivedDataPath build/ProxyConfigHelper build
+    helper_bin=$(find build/ProxyConfigHelper/Build/Products/Release -name "com.metacubex.Neko.ProxyConfigHelper" -type f | head -1)
     if [ -z "$helper_bin" ]; then
         echo "ProxyConfigHelper binary not found after build." >&2
         exit 1
@@ -118,27 +118,27 @@ if [ ! -f "$meta_path" ]; then
 fi
 
 echo "delete old files"
-rm -f ./ClashX/Resources/country.mmdb
-rm -f ./ClashX/Resources/geosite.dat
-rm -f ./ClashX/Resources/geoip.dat
-rm -rf ./ClashX/Resources/dashboard
+rm -f ./Neko/Resources/country.mmdb
+rm -f ./Neko/Resources/geosite.dat
+rm -f ./Neko/Resources/geoip.dat
+rm -rf ./Neko/Resources/dashboard
 rm -f GeoLite2-Country.*
 echo "install mmdb"
 curl -LO https://github.com/MetaCubeX/meta-rules-dat/raw/release/country.mmdb
 gzip country.mmdb
-mv country.mmdb.gz ./ClashX/Resources/country.mmdb.gz
+mv country.mmdb.gz ./Neko/Resources/country.mmdb.gz
 echo "install geosite"
 curl -LO https://github.com/MetaCubeX/meta-rules-dat/raw/release/geosite.dat
 gzip geosite.dat
-mv geosite.dat.gz ./ClashX/Resources/geosite.dat.gz
+mv geosite.dat.gz ./Neko/Resources/geosite.dat.gz
 echo "install geoip"
 curl -LO https://github.com/MetaCubeX/meta-rules-dat/raw/release/geoip.dat
 gzip geoip.dat
-mv geoip.dat.gz ./ClashX/Resources/geoip.dat.gz
+mv geoip.dat.gz ./Neko/Resources/geoip.dat.gz
 
 
 echo "install yacd dashboard"
-cd ClashX/Resources
+cd Neko/Resources
 git clone -b gh-pages https://github.com/MetaCubeX/Yacd-meta.git dashboard/yacd
 cd dashboard/yacd
 rm -rf *.webmanifest *.js CNAME .git

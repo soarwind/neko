@@ -1,6 +1,6 @@
 //
 //  MetaServer.swift
-//  ClashX
+//  Neko
 //
 //  Copyright © 2024 west2online. All rights reserved.
 //

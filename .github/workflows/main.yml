@@ -1,4 +1,4 @@
-name: ClashX
+name: Neko
 
 on:
   push:
@@ -21,40 +21,40 @@ jobs:
 
     - name: build infos
       run: |
-        /usr/libexec/PlistBuddy -c "Set CFBundleVersion $(git rev-list --count HEAD)" ClashX/Info.plist
-        /usr/libexec/PlistBuddy -c "Set CFBundleShortVersionString $(git describe --tags --abbrev=0)" ClashX/Info.plist
-        /usr/libexec/PlistBuddy -c "Add gitBranch string $GITHUB_REF_NAME" ClashX/Info.plist
-        /usr/libexec/PlistBuddy -c "Add gitCommit string ${GITHUB_SHA::7}" ClashX/Info.plist
-        /usr/libexec/PlistBuddy -c "Add buildTime string $(date +%Y-%m-%d\ %H:%M)" ClashX/Info.plist
+        /usr/libexec/PlistBuddy -c "Set CFBundleVersion $(git rev-list --count HEAD)" Neko/Info.plist
+        /usr/libexec/PlistBuddy -c "Set CFBundleShortVersionString $(git describe --tags --abbrev=0)" Neko/Info.plist
+        /usr/libexec/PlistBuddy -c "Add gitBranch string $GITHUB_REF_NAME" Neko/Info.plist
+        /usr/libexec/PlistBuddy -c "Add gitCommit string ${GITHUB_SHA::7}" Neko/Info.plist
+        /usr/libexec/PlistBuddy -c "Add buildTime string $(date +%Y-%m-%d\ %H:%M)" Neko/Info.plist
 
-        /usr/libexec/PlistBuddy -c 'Print CFBundleVersion' ClashX/Info.plist
-        /usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' ClashX/Info.plist
-        /usr/libexec/PlistBuddy -c 'Print gitBranch' ClashX/Info.plist
-        /usr/libexec/PlistBuddy -c 'Print gitCommit' ClashX/Info.plist
-        /usr/libexec/PlistBuddy -c 'Print buildTime' ClashX/Info.plist
+        /usr/libexec/PlistBuddy -c 'Print CFBundleVersion' Neko/Info.plist
+        /usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' Neko/Info.plist
+        /usr/libexec/PlistBuddy -c 'Print gitBranch' Neko/Info.plist
+        /usr/libexec/PlistBuddy -c 'Print gitCommit' Neko/Info.plist
+        /usr/libexec/PlistBuddy -c 'Print buildTime' Neko/Info.plist
 
     - name: install deps
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         bash install_dependency.sh
-        xcodebuild -resolvePackageDependencies -project ClashX.xcodeproj
-        /usr/libexec/PlistBuddy -c 'Print coreVersion' ClashX/Info.plist
+        xcodebuild -resolvePackageDependencies -project Neko.xcodeproj
+        /usr/libexec/PlistBuddy -c 'Print coreVersion' Neko/Info.plist
         
 
     - name: build
       run: |
-        xcodebuild archive -project ClashX.xcodeproj -scheme ClashX\ Meta -archivePath archive/ClashX.xcarchive -showBuildTimingSummary -allowProvisioningUpdates
+        xcodebuild archive -project Neko.xcodeproj -scheme Neko -archivePath archive/Neko.xcarchive -showBuildTimingSummary -allowProvisioningUpdates
 
     - name: create zip
-      run: ditto -c -k --sequesterRsrc --keepParent archive/ClashX.xcarchive/Products/Applications/ClashX\ Meta.app "ClashX Meta.zip"
+      run: ditto -c -k --sequesterRsrc --keepParent archive/Neko.xcarchive/Products/Applications/Neko.app "Neko.zip"
 
 
     - name: upload Artifact
       uses: actions/upload-artifact@v4
       if: "!startsWith(github.ref, 'refs/tags/')"
       with:
-        name: "ClashX Meta.zip"
+        name: "Neko.zip"
         path: "*.zip"
 
     - name: load sparkle-repo
@@ -72,7 +72,7 @@ jobs:
 
         rm -f sparkle-repo/*.delta
 
-        cp "ClashX Meta.zip" "sparkle-repo/ClashX Meta $GITHUB_REF_NAME.zip"
+        cp "Neko.zip" "sparkle-repo/Neko $GITHUB_REF_NAME.zip"
         
         brew install sparkle
         echo '${{ secrets.ED_KEY }}' | $(brew --prefix)/Caskroom/sparkle/2.*/bin/generate_appcast sparkle-repo --maximum-deltas 2 --auto-prune-update-files --ed-key-file -
@@ -100,4 +100,4 @@ jobs:
       with:
         generate_release_notes: true
         files: |
-          ClashX Meta.zip
+          Neko.zip

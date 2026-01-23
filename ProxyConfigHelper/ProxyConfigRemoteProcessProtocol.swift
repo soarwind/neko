@@ -1,6 +1,6 @@
 //
 //  ProxyConfigRemoteProcessProtocol.swift
-//  com.metacubex.ClashX.ProxyConfigHelper
+//  com.metacubex.Neko.ProxyConfigHelper
 //
 //  Copyright © 2024 west2online. All rights reserved.
 //

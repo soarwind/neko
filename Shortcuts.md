@@ -1,8 +1,8 @@
  # 全局快捷键
 
-ClashX Meta的全局快捷键是通过支持 AppleScript，并以系统的 Automator 程序或者Alfred Workflow调用 AppleScript 来完成全局快捷键的实现。
+Neko的全局快捷键是通过支持 AppleScript，并以系统的 Automator 程序或者Alfred Workflow调用 AppleScript 来完成全局快捷键的实现。
 
-ClashX Meta目前仅支持以下功能的AppleScript
+Neko目前仅支持以下功能的AppleScript
 
 1.  打开（关闭）系统代理
 2.  切换出站模式
@@ -14,35 +14,35 @@ ClashX Meta目前仅支持以下功能的AppleScript
 
 ## 使用Alfred Workflow
 
-[Alfred-Workflow-for-ClashX-Meta](https://github.com/hbsgithub/Alfred-Workflow-for-ClashX-Meta)
+[Alfred-Workflow-for-Neko-Meta](https://github.com/hbsgithub/Alfred-Workflow-for-Neko-Meta)
 
 ## 可用的 AppleScript 
 
 你可以在这里选择你需要的 AppleScript 代码，以此创建你需要的快捷键。 
 
-**以下示例代码为ClashX Meta程序。如果你正在用ClashX或ClashX Pro，那么请将ClashX Meta替换为 ClashX或ClashX Pro**
+**以下示例代码为Neko程序。如果你正在用Neko或Neko，那么请将Neko替换为 Neko或Neko**
 
 ---
 
 打开（关闭）系统代理
 
-`tell application "ClashX Meta" to toggleProxy`
+`tell application "Neko" to toggleProxy`
 
 切换出站模式为全局代理
 
-`tell application "ClashX Meta" to proxyMode 'global'`
+`tell application "Neko" to proxyMode 'global'`
 
 切换出站模式为直连
 
-`tell application "ClashX Meta" to proxyMode 'direct'`
+`tell application "Neko" to proxyMode 'direct'`
 
 切换出站模式为规则代理
 
-`tell application "ClashX Meta" to proxyMode 'rule'`
+`tell application "Neko" to proxyMode 'rule'`
 
 打开（关闭）Tun模式
 
-`tell application "ClashX Meta" to TunMode`
+`tell application "Neko" to TunMode`
 
 ## 已知缺陷
 

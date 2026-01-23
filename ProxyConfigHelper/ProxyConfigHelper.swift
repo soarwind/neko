@@ -1,6 +1,6 @@
 //
 //  ProxyConfigHelper.swift
-//  com.metacubex.ClashX.ProxyConfigHelper
+//  com.metacubex.Neko.ProxyConfigHelper
 //
 //  Copyright © 2024 west2online. All rights reserved.
 //
@@ -20,7 +20,7 @@ class ProxyConfigHelper: NSObject, NSXPCListenerDelegate {
 	
 	override init() {
 		shouldQuit = false
-		listener = NSXPCListener(machServiceName: "com.metacubex.ClashX.ProxyConfigHelper")
+		listener = NSXPCListener(machServiceName: "com.metacubex.Neko.ProxyConfigHelper")
 		super.init()
 		listener.delegate = self
 	}
@@ -63,7 +63,7 @@ class ProxyConfigHelper: NSObject, NSXPCListenerDelegate {
 	private func isValid(connection: NSXPCConnection) -> Bool {
 		guard let app = NSRunningApplication(processIdentifier: connection.processIdentifier),
 			  let bundleIdentifier = app.bundleIdentifier,
-			  bundleIdentifier == "com.metacubex.ClashX.meta"
+			  bundleIdentifier == "com.metacubex.Neko"
 		else {
 			return false
 		}
