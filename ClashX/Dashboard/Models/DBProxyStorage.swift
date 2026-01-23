@@ -62,9 +62,41 @@ class DBProxy: ObservableObject {
 	@Published var udpString: String
 	@Published var tfo: Bool
     @Published var rawConfig: String = ""
+    @Published var configDict: [String: Any]?
+    let providerName: String?
 	
 	var delay: Int {
 		didSet {
+        // ... (lines 68-76 unchanged)
+
+// ...
+
+    func loadFullConfig() {
+        ConfigManager.getConfigPath(configName: ConfigManager.selectConfigName) { [weak self] path in
+            guard let self = self else { return }
+            DispatchQueue.global(qos: .userInitiated).async {
+                func updateConfig(with proxyConfig: [String: Any]) {
+                    DispatchQueue.main.async {
+                        var merged = proxyConfig
+                        let cleanMerged = DBProxy.cleanConfig(merged)
+                        self.configDict = cleanMerged // Update structured data
+                        do {
+                            let yamlString = try Yams.dump(object: [cleanMerged])
+                            self.rawConfig = yamlString
+                        } catch {
+                             if let jsonData = try? JSONSerialization.data(withJSONObject: cleanMerged, options: .prettyPrinted),
+                                let jsonString = String(data: jsonData, encoding: .utf8) {
+                                 self.rawConfig = jsonString
+                             }
+                        }
+                    }
+                }
+                
+                guard let content = try? String(contentsOfFile: path),
+                      let yaml = try? Yams.load(yaml: content) as? [String: Any] else {
+                    return
+                }
+                // ... (rest of logic same as before)
 			delayString = DBProxy.delayString(delay)
 			delayColor = DBProxy.delayColor(delay)
 		}
@@ -79,6 +111,7 @@ class DBProxy: ObservableObject {
 		type = proxy.type
 		tfo = proxy.tfo
 		delay = proxy.history.last?.delayInt ?? 0
+        providerName = proxy.enclosingProvider?.name
 				
 		udpString = {
 			if proxy.udp {
@@ -164,6 +197,70 @@ class DBProxy: ObservableObject {
 			return .orange
 		}
 	}
+    func loadFullConfig() {
+        ConfigManager.getConfigPath(configName: ConfigManager.selectConfigName) { [weak self] path in
+            guard let self = self else { return }
+            DispatchQueue.global(qos: .userInitiated).async {
+                func updateConfig(with proxyConfig: [String: Any]) {
+                    DispatchQueue.main.async {
+                        var merged = proxyConfig
+                        let cleanMerged = DBProxy.cleanConfig(merged)
+                        self.configDict = cleanMerged
+                        do {
+                            let yamlString = try Yams.dump(object: [cleanMerged])
+                            self.rawConfig = yamlString
+                        } catch {
+                             if let jsonData = try? JSONSerialization.data(withJSONObject: cleanMerged, options: .prettyPrinted),
+                                let jsonString = String(data: jsonData, encoding: .utf8) {
+                                 self.rawConfig = jsonString
+                             }
+                        }
+                    }
+                }
+                
+                guard let content = try? String(contentsOfFile: path),
+                      let yaml = try? Yams.load(yaml: content) as? [String: Any] else {
+                    return
+                }
+                
+                // If it belongs to a provider
+                if let providerName = self.providerName,
+                   let providers = yaml["proxy-providers"] as? [String: Any],
+                   let provider = providers[providerName] as? [String: Any] {
+                   
+                    // Get provider path
+                    var providerPath: String?
+                    if let pathStr = provider["path"] as? String {
+                         // Resolve path relative to config file
+                         let configDir = (path as NSString).deletingLastPathComponent
+                         if pathStr.hasPrefix("/") {
+                             providerPath = pathStr
+                         } else {
+                             providerPath = (configDir as NSString).appendingPathComponent(pathStr)
+                         }
+                    }
+                    
+                    if let pPath = providerPath,
+                       let pContent = try? String(contentsOfFile: pPath),
+                       let pYaml = try? Yams.load(yaml: pContent) as? [String: Any],
+                       let pProxies = pYaml["proxies"] as? [[String: Any]] {
+                        
+                        if let proxyConfig = pProxies.first(where: { ($0["name"] as? String) == self.name }) {
+                             updateConfig(with: proxyConfig)
+                             return
+                        }
+                    }
+                }
+
+                // If not found in provider or no provider, search in main config proxies
+                if let proxies = yaml["proxies"] as? [[String: Any]] {
+                    if let proxyConfig = proxies.first(where: { ($0["name"] as? String) == self.name }) {
+                        updateConfig(with: proxyConfig)
+                    }
+                }
+            }
+        }
+    }
 }
 
 

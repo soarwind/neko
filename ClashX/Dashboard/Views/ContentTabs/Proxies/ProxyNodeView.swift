@@ -85,6 +85,7 @@ struct ProxyNodeView: View {
 		.background(now == proxy.name ? Color.accentColor.opacity(0.7) : Color("SwiftUI Colors/ContentBackgroundColor"))
 		.contextMenu {
 			Button("View Proxy Details") {
+                proxy.loadFullConfig()
 				showDetails = true
 			}
 			Button("Test Proxy Delay") {
@@ -93,30 +94,7 @@ struct ProxyNodeView: View {
 			.disabled(isBuiltInProxy)
 		}
 		.popover(isPresented: $showDetails) {
-            VStack {
-                ScrollView {
-                    Text(proxy.rawConfig)
-                        .font(.system(.caption, design: .monospaced))
-                        .textSelection(.enabled)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
-                }
-                
-                HStack {
-                    Button("Copy Node Information") {
-                        let pasteboard = NSPasteboard.general
-                        pasteboard.clearContents()
-                        pasteboard.setString(proxy.rawConfig, forType: .string)
-                        showDetails = false
-                    }
-                    
-                    Button("Close") {
-                        showDetails = false
-                    }
-                }
-                .padding(.bottom)
-            }
-            .frame(width: 300, height: 400)
+            ProxyDetailView(proxy: proxy, showDetails: $showDetails)
 		}
 	}
 
@@ -126,6 +104,83 @@ struct ProxyNodeView: View {
 
 
 }
+
+struct ProxyDetailView: View {
+    @ObservedObject var proxy: DBProxy
+    @Binding var showDetails: Bool
+    @State private var selectedTab = 0
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            Picker("", selection: $selectedTab) {
+                Text("Info").tag(0)
+                Text("Config").tag(1)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding(10)
+            
+            if selectedTab == 0 {
+                // Formatted Info View
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 12) {
+                        if let config = proxy.configDict {
+                            ForEach(config.keys.sorted(), id: \.self) { key in
+                                if !["name", "type", "proxies"].contains(key),
+                                   let value = config[key] {
+                                    HStack(alignment: .top) {
+                                        Text(key.capitalized)
+                                            .font(.system(size: 11, weight: .bold))
+                                            .foregroundColor(.secondary)
+                                            .frame(width: 80, alignment: .leading)
+                                        
+                                        Text("\(value)")
+                                            .font(.system(size: 11, design: .monospaced))
+                                            .textSelection(.enabled)
+                                            .lineLimit(nil)
+                                        Spacer()
+                                    }
+                                    Divider().opacity(0.5)
+                                }
+                            }
+                        } else {
+                            Text("Loading configuration...")
+                                .foregroundColor(.secondary)
+                                .padding()
+                        }
+                    }
+                    .padding()
+                }
+            } else {
+                // Raw Config View
+                ScrollView {
+                    Text(proxy.rawConfig)
+                        .font(.system(.caption, design: .monospaced))
+                        .textSelection(.enabled)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+                }
+            }
+            
+            Divider()
+            
+            HStack {
+                Button("Copy Config") {
+                    let pasteboard = NSPasteboard.general
+                    pasteboard.clearContents()
+                    pasteboard.setString(proxy.rawConfig, forType: .string)
+                    showDetails = false
+                }
+                
+                Button("Close") {
+                    showDetails = false
+                }
+            }
+            .padding(12)
+        }
+        .frame(width: 320, height: 450)
+    }
+}
+
 
 //struct ProxyNodeView_Previews: PreviewProvider {
 //    static var previews: some View {
