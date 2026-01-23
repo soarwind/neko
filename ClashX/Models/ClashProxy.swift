@@ -138,6 +138,7 @@ class ClashProxy: Codable {
 	let udp: Bool
 	let xudp: Bool
 	let tfo: Bool
+    var rawConfig: [String: Any]?
 
     enum SpeedtestAbleItem {
         case proxy(name: ClashProxyName)
@@ -225,6 +226,7 @@ class ClashProxyResp {
                 continue
             }
             proxiesModel.append(proxy)
+            proxy.rawConfig = value.dictionaryObject
             proxiesMap[proxy.name] = proxy
         }
         self.proxiesMap = proxiesMap

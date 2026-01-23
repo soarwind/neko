@@ -6,6 +6,7 @@
 
 import Cocoa
 import SwiftUI
+import Yams
 
 class DBProxyStorage: ObservableObject {
 	@Published var groups = [DBProxyGroup]()
@@ -60,6 +61,7 @@ class DBProxy: ObservableObject {
 	@Published var type: ClashProxyType
 	@Published var udpString: String
 	@Published var tfo: Bool
+    @Published var rawConfig: String = ""
 	
 	var delay: Int {
 		didSet {
@@ -89,6 +91,50 @@ class DBProxy: ObservableObject {
 		}()
 		delayString = DBProxy.delayString(delay)
 		delayColor = DBProxy.delayColor(delay)
+        
+        if let config = proxy.rawConfig {
+             let cleanConfig = DBProxy.cleanConfig(config)
+             do {
+                 let yaml = try Yams.dump(object: [cleanConfig])
+                 rawConfig = yaml
+             } catch {
+                 // Fallback to JSON if YAML fails
+                 if let jsonData = try? JSONSerialization.data(withJSONObject: cleanConfig, options: .prettyPrinted),
+                    let jsonString = String(data: jsonData, encoding: .utf8) {
+                     rawConfig = jsonString
+                 } else {
+                     rawConfig = "Error encoding config: \(error)"
+                 }
+             }
+        }
+	}
+    
+    static func cleanConfig(_ config: [String: Any]) -> [String: Any] {
+        var newConfig = config
+        for (key, value) in config {
+            if value is NSNull {
+                newConfig.removeValue(forKey: key)
+            } else if let dict = value as? [String: Any] {
+                newConfig[key] = cleanConfig(dict)
+            } else if let array = value as? [Any] {
+                newConfig[key] = cleanConfig(array)
+            }
+        }
+        return newConfig
+    }
+    
+    static func cleanConfig(_ array: [Any]) -> [Any] {
+        return array.compactMap { item -> Any? in
+            if item is NSNull {
+                return nil
+            } else if let dict = item as? [String: Any] {
+                return cleanConfig(dict)
+            } else if let subArray = item as? [Any] {
+                return cleanConfig(subArray)
+            } else {
+                return item
+            }
+        }
 	}
 	
 	static func delayString(_ delay: Int) -> String {
