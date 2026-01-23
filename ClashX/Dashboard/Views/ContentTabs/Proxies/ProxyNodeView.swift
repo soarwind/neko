@@ -133,7 +133,7 @@ struct ProxyDetailView: View {
                                             .foregroundColor(.secondary)
                                             .frame(width: 80, alignment: .leading)
                                         
-                                        Text("\(value)")
+                                        Text(String(describing: value))
                                             .font(.system(size: 11, design: .monospaced))
                                             .textSelection(.enabled)
                                             .lineLimit(nil)
