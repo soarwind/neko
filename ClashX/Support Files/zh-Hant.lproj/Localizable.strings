@@ -185,6 +185,33 @@
 "Proxy Mode" = "出站模式";
 
 /* No comment provided by engineer. */
+"Proxy Details" = "代理詳細資訊";
+
+/* No comment provided by engineer. */
+"View Proxy Details" = "查看代理詳細資訊";
+
+/* No comment provided by engineer. */
+"Test Proxy Delay" = "測試目前節點延遲";
+
+/* No comment provided by engineer. */
+"Name" = "名稱";
+
+/* No comment provided by engineer. */
+"Delay" = "延遲";
+
+/* No comment provided by engineer. */
+"UDP" = "UDP";
+
+/* No comment provided by engineer. */
+"TFO" = "TFO";
+
+/* No comment provided by engineer. */
+"On" = "開啟";
+
+/* No comment provided by engineer. */
+"Off" = "關閉";
+
+/* No comment provided by engineer. */
 "Proxy settings are changed by another process. ClashX is no longer the default system proxy." = "代理設定被另一個程式更改。ClashX 不再是默認的系統代理";
 
 /* No comment provided by engineer. */

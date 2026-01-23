@@ -18,13 +18,14 @@ struct ProxiesView: View {
 	
 	@State private var searchString = ProxiesSearchString()
 	@State private var isGlobalMode = false
+	@State private var selectedGroupID: String?
 	
 	@StateObject private var hideProxyNames = HideProxyNames()
 	
     var body: some View {
 		NavigationView {
             List(proxyStorage.groups.filter({ !$0.hidden }), id: \.id) { group in
-				ProxyGroupRowView(proxyGroup: group)
+				ProxyGroupRowView(proxyGroup: group, selection: $selectedGroupID)
 			}
 			.introspect(.table, on: .macOS(.v12...)) {
 				$0.refusesFirstResponder = true
@@ -54,8 +55,12 @@ struct ProxiesView: View {
 //			self.isGlobalMode = ConfigManager.shared.currentConfig?.mode == .global
 		ApiRequest.getMergedProxyData {
 			guard let resp = $0 else { return }
-			proxyStorage.groups = DBProxyStorage(resp).groups.filter {
+			let groups = DBProxyStorage(resp).groups.filter {
 				isGlobalMode ? true : $0.name != "GLOBAL"
+			}
+			proxyStorage.groups = groups
+			if selectedGroupID == nil || groups.contains(where: { $0.id == selectedGroupID }) == false {
+				selectedGroupID = groups.first?.id
 			}
 		}
 	}

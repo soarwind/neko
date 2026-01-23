@@ -9,11 +9,12 @@ import SwiftUI
 struct ProxyGroupRowView: View {
 	
 	@ObservedObject var proxyGroup: DBProxyGroup
+	@Binding var selection: String?
 
 	@EnvironmentObject var hideProxyNames: HideProxyNames
 	
     var body: some View {
-		NavigationLink {
+		NavigationLink(tag: proxyGroup.id, selection: $selection) {
 			ProxyGroupView(proxyGroup: proxyGroup)
 		} label: {
 			labelView

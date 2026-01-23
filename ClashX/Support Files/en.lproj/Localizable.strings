@@ -216,6 +216,33 @@
 "Proxy Mode" = "Proxy Mode";
 
 /* No comment provided by engineer. */
+"Proxy Details" = "Proxy Details";
+
+/* No comment provided by engineer. */
+"View Proxy Details" = "View Proxy Details";
+
+/* No comment provided by engineer. */
+"Test Proxy Delay" = "Test Proxy Delay";
+
+/* No comment provided by engineer. */
+"Name" = "Name";
+
+/* No comment provided by engineer. */
+"Delay" = "Delay";
+
+/* No comment provided by engineer. */
+"UDP" = "UDP";
+
+/* No comment provided by engineer. */
+"TFO" = "TFO";
+
+/* No comment provided by engineer. */
+"On" = "On";
+
+/* No comment provided by engineer. */
+"Off" = "Off";
+
+/* No comment provided by engineer. */
 "Proxy settings are changed by another process. ClashX is no longer the default system proxy." = "Proxy settings are changed by another process. ClashX is no longer the default system proxy.";
 
 /* No comment provided by engineer. */

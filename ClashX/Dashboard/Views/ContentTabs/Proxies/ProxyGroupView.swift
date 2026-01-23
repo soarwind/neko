@@ -104,7 +104,10 @@ struct ProxyGroupView: View {
 				ProxyNodeView(
 					proxy: proxy,
 					selectable: [.select, .fallback].contains(proxyGroup.type),
-					now: $groupSelected
+					now: $groupSelected,
+					onTestLatency: {
+						testProxyDelay(proxy)
+					}
 				)
 				.cornerRadius(8)
 				.onTapGesture {
@@ -144,6 +147,16 @@ struct ProxyGroupView: View {
 			guard success else { return }
 			proxyGroup.now = name
 			self.groupSelected = name
+		}
+	}
+
+	func testProxyDelay(_ proxy: DBProxy) {
+		ApiRequest.getProxyDelay(proxyName: proxy.name) { delay in
+			guard let index = proxyGroup.proxies.firstIndex(where: { $0.id == proxy.id }) else { return }
+			proxyGroup.proxies[index].delay = delay
+			if proxyGroup.currentProxy?.name == proxyGroup.proxies[index].name {
+				proxyGroup.currentProxy = proxyGroup.proxies[index]
+			}
 		}
 	}
 	
