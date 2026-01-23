@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+ROOT_DIR="$(pwd)"
+
 if [ ! -d "sing-box" ]; then
     echo "Downloading sing-box..."
     mkdir sing-box
@@ -102,14 +104,27 @@ sed -n '20p' ../Neko/AppDelegate.swift
 echo "Gzip Universal core"
 gzip -f sing-box
 cp sing-box.gz ../Neko/Resources/
-cd ..
+cd "$ROOT_DIR"
 
 echo "Ensure ProxyConfigHelper meta exists"
 meta_path="./Neko/Resources/com.metacubex.Neko.ProxyConfigHelper.meta.gz"
 if [ ! -f "$meta_path" ]; then
     echo "Building ProxyConfigHelper for meta..."
-    xcodebuild -project Neko.xcodeproj -scheme "com.metacubex.Neko.ProxyConfigHelper" -configuration Release -derivedDataPath build/ProxyConfigHelper build
-    helper_bin=$(find build/ProxyConfigHelper/Build/Products/Release -name "com.metacubex.Neko.ProxyConfigHelper" -type f | head -1)
+    derived_path="build/ProxyConfigHelper"
+    build_failed=true
+    if xcodebuild -project Neko.xcodeproj -scheme "com.metacubex.Neko.ProxyConfigHelper" -configuration Release -derivedDataPath "$derived_path" -destination "generic/platform=macOS" build; then
+        build_failed=false
+    else
+        echo "xcodebuild with scheme failed, retrying with target..." >&2
+        if xcodebuild -project Neko.xcodeproj -target "com.metacubex.Neko.ProxyConfigHelper" -configuration Release -derivedDataPath "$derived_path" -destination "generic/platform=macOS" build; then
+            build_failed=false
+        fi
+    fi
+    if [ "$build_failed" = "true" ]; then
+        echo "ProxyConfigHelper build failed. If you see 'project is damaged', open Neko.xcodeproj and resolve project.pbxproj issues." >&2
+        exit 1
+    fi
+    helper_bin=$(find "$derived_path/Build/Products/Release" -name "com.metacubex.Neko.ProxyConfigHelper" -type f | head -1)
     if [ -z "$helper_bin" ]; then
         echo "ProxyConfigHelper binary not found after build." >&2
         exit 1
