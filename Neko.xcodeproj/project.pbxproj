@@ -173,7 +173,7 @@
 		01F3363B2AD10D0B0048AF77 /* RemoteConfigAddView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 499A485922ED781100F6C675 /* RemoteConfigAddView.xib */; };
 		01F3363C2AD10D0B0048AF77 /* sampleConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 4989F98D20D0AE990001E564 /* sampleConfig.json */; };
 		01F3363D2AD10D0B0048AF77 /* com.metacubex.Neko.ProxyConfigHelper.meta.gz in Resources */ = {isa = PBXBuildFile; fileRef = 01C1462928962E4E00346AF3 /* com.metacubex.Neko.ProxyConfigHelper.meta.gz */; };
-		01F336412AD10D0B0048AF77 /* sing-box.gz in Resources */ = {isa = PBXBuildFile; fileRef = 01F336422AD10D0B0048AF77 /* sing-box.gz */; };
+		41CCA1F9D0F64D438A94D1E4 /* sing-box.gz in Resources */ = {isa = PBXBuildFile; fileRef = B14BC30048B94E9EB2199C5D /* sing-box.gz */; };
 		01F3363E2AD10D0B0048AF77 /* country.mmdb.gz in Resources */ = {isa = PBXBuildFile; fileRef = 01B2274A29B845F100FE35C9 /* country.mmdb.gz */; };
 		01F336402AD10D0B0048AF77 /* com.metacubex.Neko.ProxyConfigHelper in Copy Files */ = {isa = PBXBuildFile; fileRef = F9A7C0692306E874007163C7 /* com.metacubex.Neko.ProxyConfigHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		01FBC6312B9C2B0800810BFF /* ClashProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FBC62F2B9C2B0800810BFF /* ClashProcess.swift */; };
@@ -230,7 +230,7 @@
 		01B009AD2854533300B93618 /* geosite.dat.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = geosite.dat.gz; sourceTree = "<group>"; };
 		01B1CB092A2E20C10073EA34 /* DashboardManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardManager.swift; sourceTree = "<group>"; };
 		01B2274A29B845F100FE35C9 /* country.mmdb.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = country.mmdb.gz; sourceTree = "<group>"; };
-		01F336422AD10D0B0048AF77 /* sing-box.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = sing-box.gz; sourceTree = "<group>"; };
+		B14BC30048B94E9EB2199C5D /* sing-box.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = sing-box.gz; sourceTree = "<group>"; };
 		01BC9ABD2928E5C600F9B177 /* MetaDNS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaDNS.swift; sourceTree = "<group>"; };
 		01BCDAB92C9ECD010028FA94 /* DashboardViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewContoller.swift; sourceTree = "<group>"; };
 		01BCDABA2C9ECD010028FA94 /* DBConnectionSnapShot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBConnectionSnapShot.swift; sourceTree = "<group>"; };
@@ -712,7 +712,7 @@
 				01B009AC2854533200B93618 /* geoip.dat.gz */,
 				01B009AD2854533300B93618 /* geosite.dat.gz */,
 				01C1462928962E4E00346AF3 /* com.metacubex.Neko.ProxyConfigHelper.meta.gz */,
-				01F336422AD10D0B0048AF77 /* sing-box.gz */,
+				B14BC30048B94E9EB2199C5D /* sing-box.gz */,
 				49761DA621C9497000AE13EF /* dashboard */,
 				4989F98D20D0AE990001E564 /* sampleConfig.json */,
 				01E33AB429B5C5E300FD1006 /* menu_icon@2x.png */,
@@ -1001,7 +1001,7 @@
 				01F3363B2AD10D0B0048AF77 /* RemoteConfigAddView.xib in Resources */,
 				01F3363C2AD10D0B0048AF77 /* sampleConfig.json in Resources */,
 				01F3363D2AD10D0B0048AF77 /* com.metacubex.Neko.ProxyConfigHelper.meta.gz in Resources */,
-				01F336412AD10D0B0048AF77 /* sing-box.gz in Resources */,
+				41CCA1F9D0F64D438A94D1E4 /* sing-box.gz in Resources */,
 				01F3363E2AD10D0B0048AF77 /* country.mmdb.gz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

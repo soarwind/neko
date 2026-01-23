@@ -112,19 +112,28 @@ if [ ! -f "$meta_path" ]; then
     echo "Building ProxyConfigHelper for meta..."
     derived_path="build/ProxyConfigHelper"
     build_failed=true
+    build_mode=""
     if xcodebuild -project Neko.xcodeproj -scheme "com.metacubex.Neko.ProxyConfigHelper" -configuration Release -derivedDataPath "$derived_path" -destination "generic/platform=macOS" build; then
         build_failed=false
+        build_mode="scheme"
     else
         echo "xcodebuild with scheme failed, retrying with target..." >&2
-        if xcodebuild -project Neko.xcodeproj -target "com.metacubex.Neko.ProxyConfigHelper" -configuration Release -derivedDataPath "$derived_path" -destination "generic/platform=macOS" build; then
+        if xcodebuild -project Neko.xcodeproj -target "com.metacubex.Neko.ProxyConfigHelper" -configuration Release -destination "generic/platform=macOS" build; then
             build_failed=false
+            build_mode="target"
         fi
     fi
     if [ "$build_failed" = "true" ]; then
         echo "ProxyConfigHelper build failed. If you see 'project is damaged', open Neko.xcodeproj and resolve project.pbxproj issues." >&2
         exit 1
     fi
-    helper_bin=$(find "$derived_path/Build/Products/Release" -name "com.metacubex.Neko.ProxyConfigHelper" -type f | head -1)
+    helper_search_dir=""
+    if [ "$build_mode" = "scheme" ]; then
+        helper_search_dir="$derived_path/Build/Products/Release"
+    else
+        helper_search_dir=$(xcodebuild -project Neko.xcodeproj -target "com.metacubex.Neko.ProxyConfigHelper" -configuration Release -showBuildSettings 2>/dev/null | awk -F' = ' '/TARGET_BUILD_DIR/ {print $2; exit}')
+    fi
+    helper_bin=$(find "$helper_search_dir" -name "com.metacubex.Neko.ProxyConfigHelper" -type f | head -1)
     if [ -z "$helper_bin" ]; then
         echo "ProxyConfigHelper binary not found after build." >&2
         exit 1
