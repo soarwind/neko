@@ -135,7 +135,6 @@ struct ProxyDetailView: View {
                                         
                                         Text(String(describing: value))
                                             .font(.system(size: 11, design: .monospaced))
-                                            .textSelection(.enabled)
                                             .lineLimit(nil)
                                         Spacer()
                                     }
@@ -155,7 +154,6 @@ struct ProxyDetailView: View {
                 ScrollView {
                     Text(proxy.rawConfig)
                         .font(.system(.caption, design: .monospaced))
-                        .textSelection(.enabled)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
                 }
