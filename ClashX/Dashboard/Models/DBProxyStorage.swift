@@ -207,13 +207,12 @@ class DBProxy: ObservableObject {
                         let cleanMerged = DBProxy.cleanConfig(merged)
                         self.configDict = cleanMerged
                         do {
-                            let yamlString = try Yams.dump(object: [cleanMerged])
-                            self.rawConfig = yamlString
-                        } catch {
-                             if let jsonData = try? JSONSerialization.data(withJSONObject: cleanMerged, options: .prettyPrinted),
-                                let jsonString = String(data: jsonData, encoding: .utf8) {
+                             let jsonData = try JSONSerialization.data(withJSONObject: cleanMerged, options: .prettyPrinted)
+                             if let jsonString = String(data: jsonData, encoding: .utf8) {
                                  self.rawConfig = jsonString
                              }
+                        } catch {
+                            self.rawConfig = "Error encoding config: \(error)"
                         }
                     }
                 }
