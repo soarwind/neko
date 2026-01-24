@@ -110,6 +110,15 @@ struct ProxyDetailView: View {
     @Binding var showDetails: Bool
     @State private var selectedTab = 0
     
+    var formattedInfo: [(String, String)] {
+        guard let config = proxy.configDict else { return [] }
+        return config.keys.sorted().compactMap { key in
+            guard !["name", "type", "proxies"].contains(key),
+                  let value = config[key] else { return nil }
+            return (key, String(describing: value))
+        }
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             Picker("", selection: $selectedTab) {
@@ -123,23 +132,20 @@ struct ProxyDetailView: View {
                 // Formatted Info View
                 ScrollView {
                     VStack(alignment: .leading, spacing: 12) {
-                        if let config = proxy.configDict {
-                            ForEach(config.keys.sorted(), id: \.self) { key in
-                                if !["name", "type", "proxies"].contains(key),
-                                   let value = config[key] {
-                                    HStack(alignment: .top) {
-                                        Text(key.capitalized)
-                                            .font(.system(size: 11, weight: .bold))
-                                            .foregroundColor(.secondary)
-                                            .frame(width: 80, alignment: .leading)
-                                        
-                                        Text(String(describing: value))
-                                            .font(.system(size: 11, design: .monospaced))
-                                            .lineLimit(nil)
-                                        Spacer()
-                                    }
-                                    Divider().opacity(0.5)
+                        if !formattedInfo.isEmpty {
+                            ForEach(formattedInfo, id: \.0) { item in
+                                HStack(alignment: .top) {
+                                    Text(item.0.capitalized)
+                                        .font(.system(size: 11, weight: .bold))
+                                        .foregroundColor(.secondary)
+                                        .frame(width: 80, alignment: .leading)
+                                    
+                                    Text(item.1)
+                                        .font(.system(size: 11, design: .monospaced))
+                                        .lineLimit(nil)
+                                    Spacer()
                                 }
+                                Divider().opacity(0.5)
                             }
                         } else {
                             Text("Loading configuration...")
